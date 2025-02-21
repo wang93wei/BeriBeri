@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue'
-
 import Empty from '~/components/Empty.vue'
 import Loading from '~/components/Loading.vue'
 import Progress from '~/components/Progress.vue'
@@ -12,7 +10,7 @@ import { getCSRF, removeHttpFromUrl } from '~/utils/main'
 const watchLaterList = reactive<VideoItem[]>([])
 const isLoading = ref<boolean>()
 const viewAllUrl = computed((): string => {
-  return 'https://www.bilibili.com/watchlater/#/list'
+  return 'https://www.bilibili.com/watchlater/list'
 })
 const playAllUrl = computed((): string => {
   return 'https://www.bilibili.com/list/watchlater'

@@ -147,6 +147,7 @@ settings:
   # Desktop and Dock
   use_old_top_bar: 用返舊版頂部欄
   auto_hide_top_bar: 自動收埋頂部欄
+  show_top_bar_theme_color_gradient: 喺頂部欄顯示主題色漸變（淨係喺深色模式下有效）
   show_bewly_or_bili_top_bar_switcher: 顯示 BewlyBewly/Bilibili 頂部欄切換掣
   show_bewly_or_bili_page_switcher: 顯示 BewlyBewly/Bilibili 頁面切換掣
   top_bar_icon_badges: 圖標邊位標記
@@ -154,6 +155,8 @@ settings:
     number: 數字
     dot: 圓點
     none: 唔顯示
+  open_notifications_page_as_drawer: 用櫃桶打開通知頁面
+
   always_use_dock: 點都要用 Dock
   always_use_dock_desc: 啓用後，Dock 點都要用佢而唔係用側邊欄。我哋推介你同時啓用自動收埋 Dock 去。
   auto_hide_dock: 自動收埋 Dock
@@ -281,6 +284,13 @@ settings:
   reset_settings_confirm: |-
     重設設定？
     噉做冇得返轉頭噃，你確定要重設你之前嘅設定？
+
+  safari_helpers: 幫過上架 Safari 商店嘅人
+  safari_helpers_desc1: 提交 PR 支援 Safari
+  safari_helpers_desc2: 幫手免費上架 Safari
+  safari_helpers_desc3: 幫手解答註冊蘋果開發者問題
+  safari_helpers_desc4: 幫手解答註冊蘋果開發者問題
+
   contributors: 貢獻者
 
 auth:

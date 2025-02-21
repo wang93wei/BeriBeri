@@ -36,9 +36,12 @@ export interface Settings {
   // Desktop & Dock
   useOldTopBar: boolean
   autoHideTopBar: boolean
+  showTopBarThemeColorGradient: boolean
   showBewlyOrBiliTopBarSwitcher: boolean
   showBewlyOrBiliPageSwitcher: boolean
   topBarIconBadges: 'number' | 'dot' | 'none'
+  openNotificationsPageAsDrawer: boolean
+
   alwaysUseDock: boolean
   autoHideDock: boolean
   dockPosition: 'left' | 'right' | 'bottom'
@@ -134,9 +137,12 @@ export const originalSettings: Settings = {
   // Desktop & Dock
   useOldTopBar: false,
   autoHideTopBar: false,
+  showTopBarThemeColorGradient: true,
   showBewlyOrBiliTopBarSwitcher: true,
   showBewlyOrBiliPageSwitcher: true,
   topBarIconBadges: 'number',
+  openNotificationsPageAsDrawer: true,
+
   alwaysUseDock: false,
   autoHideDock: false,
   dockPosition: 'right',
@@ -189,7 +195,7 @@ export const originalSettings: Settings = {
   enableFilterByUser: false,
   filterByUser: [],
 
-  followingTabShowLivestreamingVideos: true,
+  followingTabShowLivestreamingVideos: false,
 
   homePageTabVisibilityList: [],
   alwaysShowTabsOnHomePage: false,

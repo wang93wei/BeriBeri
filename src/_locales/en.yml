@@ -80,8 +80,10 @@ settings:
   group_wallpaper: Wallpaper
   group_logo: LOGO
   group_search_bar: Search Bar
-  group_recommendation_mode: \"For you\" Recommendation Mode
-  group_recommendation_filters: \"For you\" Recommendation Filters
+  group_recommendation_mode: |-
+    "For you" Recommendation Mode
+  group_recommendation_filters: |-
+    "For you" Recommendation Filters
   group_recommendation_filters_desc: |
     Do not set the restricted value too large, as this may increase loading time!
   group_following: Following
@@ -149,6 +151,7 @@ settings:
   # Desktop & Dock
   use_old_top_bar: Use the old top bar
   auto_hide_top_bar: Automatically hide the top bar
+  show_top_bar_theme_color_gradient: Show theme color gradient in top bar (only works in dark mode)
   show_bewly_or_bili_top_bar_switcher: Show BewlyBewly/Bilibili top bar switcher
   show_bewly_or_bili_page_switcher: Show BewlyBewly/Bilibili page switcher
   top_bar_icon_badges: Icon badges
@@ -156,6 +159,8 @@ settings:
     number: Number
     dot: Dot
     none: Do not show
+  open_notifications_page_as_drawer: Open the notifications page as a drawer
+
   always_use_dock: Always use the dock
   always_use_dock_desc: The dock will always be visible and the sidebar will be hidden. We also recommend enabling auto-hide for the dock.
   auto_hide_dock: Automatically hide the dock
@@ -285,6 +290,13 @@ settings:
   reset_settings_confirm: |-
     Reset settings?
     This operation cannot be reversed. Are you sure you want to reset your settings?
+
+  safari_helpers: Those who helped with publishing to the Safari store
+  safari_helpers_desc1: Submit PR to support Safari
+  safari_helpers_desc2: Help publish on Safari for free
+  safari_helpers_desc3: Help answer Apple developer registration questions
+  safari_helpers_desc4: Help answer Apple developer registration questions
+
   contributors: Contributors
 
 auth:

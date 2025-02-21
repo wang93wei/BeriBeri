@@ -21,11 +21,23 @@ const headerShow = ref(false)
 const iframeRef = ref<HTMLIFrameElement | null>(null)
 const currentUrl = ref<string>(props.url)
 const delayCloseTimer = ref<NodeJS.Timeout | null>(null)
+const removeTopBarClassInjected = ref<boolean>(false)
 
 useEventListener(window, 'popstate', updateIframeUrl)
 nextTick(() => {
   useEventListener(iframeRef.value?.contentWindow, 'historyChange', updateCurrentUrl)
   useEventListener(iframeRef.value?.contentWindow, 'popstate', updateCurrentUrl)
+
+  useEventListener(iframeRef.value?.contentWindow, 'DOMContentLoaded', () => {
+    if (headerShow.value) {
+      iframeRef.value?.contentWindow?.document.documentElement.classList.add('remove-top-bar-without-placeholder')
+      removeTopBarClassInjected.value = true
+    }
+    else {
+      iframeRef.value?.contentWindow?.document.documentElement.classList.remove('remove-top-bar-without-placeholder')
+      removeTopBarClassInjected.value = false
+    }
+  })
 })
 
 onMounted(() => {
@@ -84,7 +96,13 @@ async function handleClose() {
 async function releaseIframeResources() {
   // Clear iframe content
   currentUrl.value = 'about:blank'
-  iframeRef.value?.contentWindow?.document.write('')
+  /**
+   * eg: When use 'iframeRef.value?.contentWindow?.document' of t.bilibili.com iframe on bilibili.com, there may be cross domain issues
+   * set the src to 'about:blank' to avoid this issue, it also can release the memory
+   */
+  if (iframeRef.value) {
+    iframeRef.value.src = 'about:blank'
+  }
   await nextTick()
   iframeRef.value?.contentWindow?.close()
 
@@ -238,11 +256,12 @@ watchEffect(() => {
           ref="iframeRef"
           :src="props.url"
           :style="{
-            bottom: headerShow ? `var(--bew-top-bar-height)` : '0',
+            // Prevent top bar shaking when before the remove-top-bar-without-placeholder class is injected
+            top: !removeTopBarClassInjected ? `calc(-1 * var(--bew-top-bar-height))` : '0',
           }"
           frameborder="0"
           pointer-events-auto
-          pos="absolute  left-0"
+          pos="relative left-0"
           w-full h-full
         />
       </div>

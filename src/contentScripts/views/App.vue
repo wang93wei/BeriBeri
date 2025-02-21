@@ -9,7 +9,7 @@ import { AppPage } from '~/enums/appEnums'
 import { settings } from '~/logic'
 import { type DockItem, useMainStore } from '~/stores/mainStore'
 import { useSettingsStore } from '~/stores/settingsStore'
-import { isHomePage, isInIframe, openLinkToNewTab, queryDomUntilFound, scrollToTop } from '~/utils/main'
+import { isHomePage, isInIframe, isNotificationPage, isVideoOrBangumiPage, openLinkToNewTab, queryDomUntilFound, scrollToTop } from '~/utils/main'
 import emitter from '~/utils/mitt'
 
 import { setupNecessarySettingsWatchers } from './necessarySettingsWatchers'
@@ -93,6 +93,28 @@ const showBewlyPage = computed((): boolean => {
 
   return isHomePage() && !settings.value.useOriginalBilibiliHomepage
 })
+const showTopBar = computed((): boolean => {
+  // When using the open in drawer feature, the iframe inside the page will hide the top bar
+  if (isVideoOrBangumiPage() && isInIframe())
+    return false
+
+  // when user open the notifications page as a drawer, don't show the top bar
+  if (isNotificationPage() && settings.value.openNotificationsPageAsDrawer && isInIframe())
+    return false
+
+  // When the user switches to the original Bilibili page, BewlyBewly will only show the top bar inside the iframe.
+  // This helps prevent the outside top bar from covering the contents.
+  // reference: https://github.com/BewlyBewly/BewlyBewly/issues/1235
+
+  // when using original bilibili homepage, show top bar
+  return settings.value.useOriginalBilibiliHomepage
+  // when on home page and not using original bilibili page, show top bar
+    || (isHomePage() && !settingsStore.getDockItemIsUseOriginalBiliPage(activatedPage.value) && !isInIframe())
+  // when in iframe and using original bilibili page, show top bar
+    || (settingsStore.getDockItemIsUseOriginalBiliPage(activatedPage.value) && isInIframe())
+  // when not on home page, show top bar
+    || !isHomePage()
+})
 
 const isFirstTimeActivatedPageChange = ref<boolean>(true)
 watch(
@@ -113,6 +135,19 @@ watch(
   },
   { immediate: true },
 )
+
+watch([() => showTopBar.value, () => activatedPage.value], () => {
+  // Remove the original Bilibili top bar when using original bilibili page to avoid two top bars showing
+  const biliHeader = document.querySelector('.bili-header') as HTMLElement | null
+  if (biliHeader && isHomePage()) {
+    if (settingsStore.getDockItemIsUseOriginalBiliPage(activatedPage.value) && !isInIframe()) {
+      biliHeader.style.visibility = 'hidden'
+    }
+    else {
+      biliHeader.style.visibility = 'visible'
+    }
+  }
+}, { immediate: true })
 
 // Setup necessary settings watchers
 setupNecessarySettingsWatchers()
@@ -143,6 +178,9 @@ function handleDockItemClick(dockItem: DockItem) {
     if (dockItem.useOriginalBiliPage) {
       // It seem like the `activatedPage` watcher above will handle this, so no need to set iframePageURL.value here
       // iframePageURL.value = dockItem.url
+      if (!isHomePage()) {
+        location.href = `https://www.bilibili.com/?page=${dockItem.page}`
+      }
     }
     else {
       if (isHomePage()) {
@@ -230,9 +268,15 @@ function openIframeDrawer(url: string) {
 async function haveScrollbar() {
   await nextTick()
   const osInstance = scrollbarRef.value?.osInstance()
-  const { viewport } = osInstance.elements()
-  const { scrollHeight } = viewport // get scroll offset
-  return scrollHeight > window.innerHeight
+  // If the scrollbarRef is not ready, return false
+  if (osInstance) {
+    const { viewport } = osInstance.elements()
+    const { scrollHeight } = viewport // get scroll offset
+    return scrollHeight > window.innerHeight
+  }
+  else {
+    return false
+  }
 }
 
 // In drawer video, watch btn className changed and post message to parent
@@ -319,19 +363,7 @@ provide<BewlyAppProvider>('BEWLY_APP', {
 
     <!-- TopBar -->
     <div
-      v-if="
-        // When the user switches to the original Bilibili page, BewlyBewly will only show the top bar inside the iframe.
-        // This helps prevent the outside top bar from covering the contents.
-        // reference: https://github.com/BewlyBewly/BewlyBewly/issues/1235
-
-        // when using original bilibili homepage, show top bar
-        settings.useOriginalBilibiliHomepage
-          // when on home page and not using original bilibili page, show top bar
-          || (isHomePage() && !settingsStore.getDockItemIsUseOriginalBiliPage(activatedPage) && !isInIframe())
-          // when in iframe and using original bilibili page, show top bar
-          || (settingsStore.getDockItemIsUseOriginalBiliPage(activatedPage) && isInIframe())
-          // when not on home page, show top bar
-          || !isHomePage()"
+      v-if="showTopBar"
       m-auto max-w="$bew-page-max-width"
     >
       <BewlyOrBiliTopBarSwitcher v-if="settings.showBewlyOrBiliTopBarSwitcher" />

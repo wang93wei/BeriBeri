@@ -5,8 +5,11 @@
   // outline-offset: 2px;
 }
 
-.bewly-design.dark * {
-  color-scheme: dark;
+.dark {
+  input,
+  textarea {
+    color-scheme: dark;
+  }
 }
 
 ::-webkit-scrollbar {
@@ -42,7 +45,7 @@ html.bewly-design,
 
 .dark.bewly-design body,
 html.dark.bewly-design {
-  background-color: var(--bew-bg);
+  background-color: var(--bew-bg) !important;
 }
 
 .bewly-design *::selection,

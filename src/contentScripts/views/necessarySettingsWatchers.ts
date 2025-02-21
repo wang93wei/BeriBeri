@@ -100,16 +100,11 @@ export function setupNecessarySettingsWatchers() {
   )
 
   const removeTheIndentFromChinesePunctuationStyleEl = injectCSS(`
-    .video-info-container .special-text-indent[data-title^='《'],
-    .video-info-container .special-text-indent[data-title^='「'],
-    .video-info-container .special-text-indent[data-title^='『'], 
-    .video-info-container .special-text-indent[data-title^='【'],
-    p[title^='\\300c'],
-    p[title^='\\300e'],
-    p[title^='\\3010'],
-    h3[title^='\\300c'],
-    h3[title^='\\300e'],
-    h3[title^='\\3010'] {
+    .video-info-container .special-text-indent[data-title^='“'],a[title^='“'],p[title^='“'],h3[title^='“'],
+    .video-info-container .special-text-indent[data-title^='《'],a[title^='《'],p[title^='《'],h3[title^='《'],
+    .video-info-container .special-text-indent[data-title^='「'],a[title^='「'],p[title^='「'],h3[title^='「'],
+    .video-info-container .special-text-indent[data-title^='『'],a[title^='『'],p[title^='『'],h3[title^='『'],
+    .video-info-container .special-text-indent[data-title^='【'],a[title^='【'],p[title^='【'],h3[title^='【'] {
       text-indent: 0 !important;
     }
   `)
@@ -259,7 +254,7 @@ export function setupNecessarySettingsWatchers() {
     (newVal) => {
       if (newVal)
         settings.value.showTopBar = false
-      document.documentElement.classList.toggle('remove-bili-top-bar', !settings.value.useOriginalBilibiliTopBar)
+      document.documentElement.classList.toggle('remove-top-bar', !settings.value.useOriginalBilibiliTopBar)
       settings.value.showTopBar = !settings.value.useOriginalBilibiliTopBar
     },
     { immediate: true },

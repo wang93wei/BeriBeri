@@ -169,12 +169,23 @@ function handleClick(event: MouseEvent) {
 }
 
 function handleMoreBtnClick(event: MouseEvent) {
+  // the distance between the bottom and the height of the more button
+  if (!moreBtnRef.value)
+    return
+  const { bottom, height } = moreBtnRef.value.getBoundingClientRect()
+
+  /**
+   * if (screen height - bottom > 406px) then context-menu offset upwards
+   * Why 406? Because the current context-menu is not a responsive layout, it can be temporarily referred to as 406
+   */
+  const offsetTop = window.innerHeight - bottom > 406 ? 0 : -406 - height
+
   showVideoOptions.value = false
   videoOptionsFloatingStyles.value = {
     position: 'absolute',
     top: 0,
     left: 0,
-    transform: `translate(${event.x}px, ${event.y}px)`,
+    transform: `translate(${event.x}px, ${event.y + offsetTop}px)`,
   }
   showVideoOptions.value = true
 }
@@ -240,7 +251,7 @@ provide('getVideoType', () => props.type!)
           :style="{ display: horizontal ? 'flex' : 'block', gap: horizontal ? '1.5rem' : '0' }"
           :href="videoUrl"
           type="videoCard"
-          custom-click-event
+          :custom-click-event="settings.videoCardLinkOpenMode === 'drawer'"
           @mouseenter="handleMouseEnter"
           @mouseleave="handelMouseLeave"
           @click="handleClick"

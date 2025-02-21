@@ -15,6 +15,37 @@ const dialogVisible = reactive({
   justWannaChangeTheJob: false,
 })
 
+const isSafari = computed((): boolean =>
+  /^(?:(?!chrome|android).)*safari/i.test(navigator.userAgent),
+)
+
+const safariHelpers = computed((): { name: string, avatar: string, url: string, desc: string }[] => [
+  {
+    name: 'exgphe',
+    avatar: '/assets/twitterUsers/exgphe.png',
+    url: 'https://github.com/exgphe',
+    desc: t('settings.safari_helpers_desc1'),
+  },
+  {
+    name: '𝗦𝘁𝗲𝘃𝗲 𝕏',
+    avatar: '/assets/twitterUsers/st7evechou.jpg',
+    url: 'https://x.com/st7evechou',
+    desc: t('settings.safari_helpers_desc2'),
+  },
+  {
+    name: '雪谋 🏖️',
+    avatar: '/assets/twitterUsers/YukiHakarigoto.jpg',
+    url: 'https://x.com/YukiHakarigoto',
+    desc: t('settings.safari_helpers_desc3'),
+  },
+  {
+    name: 'Citron🍢',
+    avatar: '/assets/twitterUsers/vanillaCitron.jpg',
+    url: 'https://x.com/vanillaCitron',
+    desc: t('settings.safari_helpers_desc4'),
+  },
+])
+
 const isDev = computed((): boolean => import.meta.env.DEV)
 
 onMounted(() => {
@@ -101,7 +132,7 @@ async function checkGitHubRelease() {
 
 <template>
   <div>
-    <div max-w-600px mx-auto>
+    <div max-w-800px mx-auto>
       <div relative w-200px m-auto>
         <img
           :src="`${browser.runtime.getURL('/assets/bewly-vtuber-style-logo.png')}`" alt="" width="200"
@@ -144,7 +175,7 @@ async function checkGitHubRelease() {
           <h3 class="title">
             {{ $t('settings.links') }}
           </h3>
-          <div grid="~ xl:cols-5 lg:cols-4 md:cols-3 cols-2 gap-2">
+          <div grid="~ xl:cols-6 lg:cols-5 md:cols-4 cols-3 gap-2">
             <a
               href="https://github.com/TC999/BewlyBewly-Beta" target="_blank"
               class="link-card"
@@ -252,7 +283,31 @@ async function checkGitHubRelease() {
             </Button>
           </div>
         </section>
-        <!-- <section>
+        <section v-if="isSafari" w-full>
+          <h3 class="title">
+            {{ $t('settings.safari_helpers') }}
+          </h3>
+          <div grid="~ lg:cols-2 md:cols-2 cols-1 gap-2" mx--2>
+            <div v-for="helper in safariHelpers" :key="helper.name">
+              <a
+                :href="helper.url" target="_blank"
+                flex="~ items-center gap-2"
+                bg="hover:$bew-fill-2"
+                p-2 rounded="$bew-radius"
+                duration-300
+              >
+                <img :src="browser.runtime.getURL(helper.avatar)" alt="" w-30px h-30px rounded-full>
+                <div>
+                  <p>{{ helper.name }}</p>
+                  <p text="sm $bew-text-2">
+                    {{ helper.desc }}
+                  </p>
+                </div>
+              </a>
+            </div>
+          </div>
+        </section>
+        <section>
           <h3 class="title">
             {{ $t('settings.contributors') }}
           </h3>
@@ -264,7 +319,7 @@ async function checkGitHubRelease() {
               w-full
             >
           </a>
-        </section> -->
+        </section>
       </section>
       <!-- <section mt-4>
         <Button
