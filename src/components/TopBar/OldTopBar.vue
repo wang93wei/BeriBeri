@@ -96,15 +96,7 @@ const isTopBarFixed = computed(() => {
   return false
 })
 
-const showTopBar = computed((): boolean => {
-  if (
-    // Creative center page
-    /https?:\/\/member.bilibili.com\/platform.*/.test(location.href)
-    // https://github.com/BewlyBewly/BewlyBewly/issues/1276
-    || /https?:\/\/(?:www\.)?bilibili\.com\/read\/(?:preview|pcpreview).*/.test(location.href)
-  ) {
-    return false
-  }
+const showTopBar = computed(() => {
   if (settings.value.showTopBar)
     return true
   return false
