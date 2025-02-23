@@ -138,7 +138,7 @@ async function checkGitHubRelease() {
           :src="`${browser.runtime.getURL('/assets/bewly-vtuber-style-logo.png')}`" alt="" width="200"
         >
         <a
-          v-if=" hasNewVersion" href="https://github.com/hakadao/BewlyBewly/releases"
+          v-if=" hasNewVersion" href="https://github.com/TC999/BewlyBewly-Beta/releases"
           target="_blank"
           pos="absolute bottom-0 right-0" transform="translate-x-50%" un-text="xs $bew-text-1" p="y-1 x-2" bg="$bew-fill-1"
           rounded-12
@@ -146,9 +146,9 @@ async function checkGitHubRelease() {
           NEW
         </a>
       </div>
-      <section text-xl text-center mt-2>
-        <p>
-          BewlyBewly-Beta
+      <section text-2xl text-center mt-2>
+        <p flex="inline gap-2" fw-900>
+          <span>BewlyBewly-Beta</span>
           <span
             v-if="isDev"
             inline-block text="$bew-warning-color"

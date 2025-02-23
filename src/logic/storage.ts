@@ -44,13 +44,15 @@ export interface Settings {
 
   alwaysUseDock: boolean
   autoHideDock: boolean
+  halfHideDock: boolean
   dockPosition: 'left' | 'right' | 'bottom'
   /** @deprecated use dockItemsConfig instead */
   dockItemVisibilityList: { page: AppPage, visible: boolean }[]
   dockItemsConfig: { page: AppPage, visible: boolean, openInNewTab: boolean, useOriginalBiliPage: boolean }[]
   disableDockGlowingEffect: boolean
   disableLightDarkModeSwitcherOnDock: boolean
-  moveBackToTopOrRefreshButtonToDock: boolean
+  backToTopAndRefreshButtonsAreSeparated: boolean
+
   sidebarPosition: 'left' | 'right'
   autoHideSidebar: boolean
 
@@ -145,13 +147,15 @@ export const originalSettings: Settings = {
 
   alwaysUseDock: false,
   autoHideDock: false,
+  halfHideDock: false,
   dockPosition: 'right',
   /** @deprecated use dockItemsConfig instead */
   dockItemVisibilityList: [],
   dockItemsConfig: [],
   disableDockGlowingEffect: false,
   disableLightDarkModeSwitcherOnDock: false,
-  moveBackToTopOrRefreshButtonToDock: true,
+  backToTopAndRefreshButtonsAreSeparated: true,
+
   sidebarPosition: 'right',
   autoHideSidebar: false,
 

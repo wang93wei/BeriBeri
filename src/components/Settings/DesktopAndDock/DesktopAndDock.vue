@@ -69,6 +69,16 @@ const sidebarPositions = computed(() => {
   ]
 })
 
+watch(() => settings.value.halfHideDock, (newValue) => {
+  if (newValue)
+    settings.value.autoHideDock = false
+})
+
+watch(() => settings.value.autoHideDock, (newValue) => {
+  if (newValue)
+    settings.value.halfHideDock = false
+})
+
 function resetDockContent() {
   settings.value.dockItemsConfig = mainStore.dockItems.map((e: DockItem) => {
     return {
@@ -121,6 +131,9 @@ function handleToggleDockItem(dockItem: any) {
       </SettingsItem>
       <SettingsItem :title="$t('settings.auto_hide_dock')">
         <Radio v-model="settings.autoHideDock" />
+      </SettingsItem>
+      <SettingsItem :title="$t('settings.half_hide_dock')">
+        <Radio v-model="settings.halfHideDock" />
       </SettingsItem>
       <SettingsItem :title="$t('settings.dock_position')" :desc="$t('settings.dock_position_desc')">
         <Select
@@ -187,8 +200,8 @@ function handleToggleDockItem(dockItem: any) {
       <SettingsItem :title="$t('settings.disable_light_dark_mode_switcher')">
         <Radio v-model="settings.disableLightDarkModeSwitcherOnDock" />
       </SettingsItem>
-      <SettingsItem :title="$t('settings.move_back_to_top_and_refresh_to_dock')">
-        <Radio v-model="settings.moveBackToTopOrRefreshButtonToDock" />
+      <SettingsItem :title="$t('settings.back_to_top_and_refresh_buttons_are_separated')">
+        <Radio v-model="settings.backToTopAndRefreshButtonsAreSeparated" />
       </SettingsItem>
     </SettingsItemGroup>
     <SettingsItemGroup :title="$t('settings.group_sidebar')" :desc="$t('settings.group_sidebar_desc')">

@@ -5,6 +5,7 @@ import { computed, ref } from 'vue'
 
 import { useBewlyApp } from '~/composables/useAppProvider'
 import { useDark } from '~/composables/useDark'
+import { useDelayedHover } from '~/composables/useDelayedHover'
 import { AppPage } from '~/enums/appEnums'
 import { settings } from '~/logic'
 import type { DockItem } from '~/stores/mainStore'
@@ -32,6 +33,20 @@ const { isDark, toggleDark } = useDark()
 const { reachTop } = useBewlyApp()
 
 const hideDock = ref<boolean>(false)
+const dockContentHover = ref<boolean>(false)
+const dockContentRef = useDelayedHover({
+  enterDelay: 100,
+  leaveDelay: 600,
+  enter: () => {
+    dockContentHover.value = true
+    toggleHideDock(false)
+  },
+  leave: () => {
+    dockContentHover.value = false
+    toggleHideDock(true)
+  },
+})
+
 const hoveringDockItem = reactive<HoveringDockItem>({
   themeMode: false,
   settings: false,
@@ -58,8 +73,7 @@ const showBackToTopOrRefreshButton = computed((): boolean => {
     return false
   }
 
-  return settings.value.moveBackToTopOrRefreshButtonToDock
-    && props.activatedPage !== AppPage.Search && isHomePage()
+  return props.activatedPage !== AppPage.Search && isHomePage()
 })
 
 watch(() => settings.value.autoHideDock, (newValue) => {
@@ -142,18 +156,26 @@ function openDockItemInNewTab(dockItem: DockItem) {
   openLinkToNewTab(`https://www.bilibili.com/?page=${dockItem.page}`)
 }
 
-function handleBackToTopOrRefresh() {
-  if (reachTop.value)
-    emit('refresh')
-  else
+function handleBackToTopOrRefresh(action: 'backToTop' | 'refresh' | 'auto' = 'auto') {
+  if (action === 'backToTop') {
     emit('backToTop')
+  }
+  else if (action === 'refresh') {
+    emit('backToTop')
+    emit('refresh')
+  }
+  else {
+    if (reachTop.value)
+      emit('refresh')
+    else
+      emit('backToTop')
+  }
 }
 
 function isDockItemActivated(dockItem: DockItem): boolean {
   return props.activatedPage === dockItem.page && isHomePage()
 }
 
-const dockContentRef = ref<HTMLElement>()
 const { width: windowWidth, height: windowHeight } = useWindowSize()
 const { width: dockWidth, height: dockHeight } = useElementSize(dockContentRef)
 
@@ -215,10 +237,12 @@ const dockTransformStyle = computed((): { transform: string, transformOrigin: st
       ref="dockContentRef"
       class="dock-content"
       :class="{
-        left: settings.dockPosition === 'left',
-        right: settings.dockPosition === 'right',
-        bottom: settings.dockPosition === 'bottom',
-        hide: hideDock,
+        'left': settings.dockPosition === 'left',
+        'right': settings.dockPosition === 'right',
+        'bottom': settings.dockPosition === 'bottom',
+        'hide': hideDock,
+        'half-hide': settings.halfHideDock,
+        'hover': dockContentHover,
       }"
       :style="dockTransformStyle"
       @mouseenter="toggleHideDock(false)"
@@ -313,27 +337,63 @@ const dockTransformStyle = computed((): { transform: string, transformOrigin: st
         </Tooltip>
       </div>
 
-      <button
+      <!-- Back to top & refresh buttons -->
+      <div
         v-if="showBackToTopOrRefreshButton"
-        class="back-to-top-or-refresh-btn"
-        :class="{
-          inactive: hoveringDockItem.themeMode && isDark,
-        }"
-        @click="handleBackToTopOrRefresh"
+        pos="absolute bottom-0"
+        transform="translate-y-100%"
+        flex="~ col gap-2"
       >
-        <Transition name="fade">
-          <Icon
-            v-if="reachTop"
-            icon="line-md:rotate-270"
-            shrink-0 rotate-90 absolute text-2xl
-          />
-          <Icon
-            v-else
-            icon="line-md:arrow-small-up"
-            shrink-0 absolute text-2xl
-          />
-        </Transition>
-      </button>
+        <template
+          v-if="settings.backToTopAndRefreshButtonsAreSeparated"
+        >
+          <template v-for="key in 2" :key="key">
+            <Transition name="fade">
+              <button
+                v-if="key === 1 || key === 2 && !reachTop"
+                class="back-to-top-or-refresh-btn"
+                :class="{
+                  inactive: hoveringDockItem.themeMode && isDark,
+                }"
+                @click="handleBackToTopOrRefresh(key === 1 ? 'refresh' : 'backToTop')"
+              >
+                <Icon
+                  v-if="key === 1"
+                  icon="line-md:rotate-270"
+                  shrink-0 rotate-90 absolute text-2xl
+                />
+                <Icon
+                  v-else
+                  icon="line-md:arrow-small-up"
+                  shrink-0 absolute text-2xl
+                />
+              </button>
+            </Transition>
+          </template>
+        </template>
+        <template v-else>
+          <button
+            class="back-to-top-or-refresh-btn"
+            :class="{
+              inactive: hoveringDockItem.themeMode && isDark,
+            }"
+            @click="handleBackToTopOrRefresh('auto')"
+          >
+            <Transition name="fade">
+              <Icon
+                v-if="reachTop"
+                icon="line-md:rotate-270"
+                shrink-0 rotate-90 absolute text-2xl
+              />
+              <Icon
+                v-else
+                icon="line-md:arrow-small-up"
+                shrink-0 absolute text-2xl
+              />
+            </Transition>
+          </button>
+        </template>
+      </div>
     </div>
   </aside>
 </template>
@@ -371,22 +431,31 @@ const dockTransformStyle = computed((): { transform: string, transformOrigin: st
   &.left {
     --uno: "left-2 after:right--4px";
   }
-  &.left.hide {
+  &.left.hide:not(.hover) {
     --uno: "opacity-0 !translate-x--100%";
+  }
+  &.left.half-hide:not(.hover) {
+    --uno: "!opacity-60 !translate-x-[calc(-50%-8px)]";
   }
 
   &.right {
     --uno: "right-2 after:left--4px";
   }
-  &.right.hide {
+  &.right.hide:not(.hover) {
     --uno: "opacity-0 !translate-x-100%";
+  }
+  &.right.half-hide:not(.hover) {
+    --uno: "!opacity-60 !translate-x-[calc(50%+8px)]";
   }
 
   &.bottom {
     --uno: "top-unset bottom-0";
   }
-  &.bottom.hide {
+  &.bottom.hide:not(.hover) {
     --uno: "opacity-0 !translate-y-100%";
+  }
+  &.bottom.half-hide:not(.hover) {
+    --uno: "!opacity-60 !translate-y-[calc(50%+8px)]";
   }
 
   .divider {
@@ -411,7 +480,6 @@ const dockTransformStyle = computed((): { transform: string, transformOrigin: st
   }
 
   .back-to-top-or-refresh-btn {
-    --uno: "absolute lg:bottom--45px bottom--35px";
     --uno: "transform active:important-scale-90 hover:scale-110";
     --uno: "lg:w-45px w-35px lg:h-45px h-35px";
     --uno: "grid place-items-center";

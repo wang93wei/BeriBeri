@@ -11,17 +11,20 @@ const props = defineProps<{ activatedPage: AppPage }>()
 
 const { isDark } = useDark()
 const { getActivatedCover } = useMainStore()
+
 const currentActivatedCover = ref<string>('')
+const isBlurredCoverLoaded = ref<boolean>(false)
 
 // Use a more aggressive debounce and skip unnecessary updates
 const debouncedCoverUpdate = useDebounceFn((newValue: string) => {
-  if (!newValue || newValue === currentActivatedCover.value)
+  if (newValue === currentActivatedCover.value)
     return
 
   const nextCover = newValue
 
   requestAnimationFrame(() => {
     currentActivatedCover.value = nextCover
+    isBlurredCoverLoaded.value = false
   })
 }, 800)
 
@@ -126,7 +129,7 @@ function setAppWallpaperMaskingOpacity() {
 
         <!-- blurred cover background -->
         <Transition v-if="!settings.wallpaper" name="fade">
-          <Transition v-show="currentActivatedCover !== ''" name="slide-fade">
+          <Transition v-show="isBlurredCoverLoaded" name="slide-fade">
             <img
               :key="currentActivatedCover"
               :src="currentActivatedCover"
@@ -136,9 +139,10 @@ function setAppWallpaperMaskingOpacity() {
                 filter: blur(20px) opacity(0.15);
                 will-change: transform, opacity;
               "
-              pointer-events-none pos="absolute top--40px left-0" w="100%" h="50%"
-              of-hidden
-              transform-gpu object-cover
+              pointer-events-none
+              pos="absolute top--40px left-0" w="100%" h="50%" of-hidden
+              transform-gpu
+              object-cover @load="isBlurredCoverLoaded = true"
             >
           </Transition>
         </Transition>

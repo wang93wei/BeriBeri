@@ -164,6 +164,7 @@ settings:
   always_use_dock: 點都要用 Dock
   always_use_dock_desc: 啓用後，Dock 點都要用佢而唔係用側邊欄。我哋推介你同時啓用自動收埋 Dock 去。
   auto_hide_dock: 自動收埋 Dock
+  half_hide_dock: 收埋一半 Dock
   dock_position: Dock 放位
   dock_position_desc: 放喺螢幕邊度。
   dock_content_adjustment: Dock 內容調整
@@ -172,7 +173,7 @@ settings:
   dock_item_use_original_bili_web_page: 用返原本嘅 Bilibili 網頁
   disable_dock_glowing_effect: 熄咗 Dock 發光效果去
   disable_light_dark_mode_switcher: 閂咗淺 / 深色主題切換粒掣去
-  move_back_to_top_and_refresh_to_dock: 將返去頂部同重新整理粒掣擺到落 Dock 度
+  back_to_top_and_refresh_buttons_are_separated: 分離返到最篤同重新整理掣
   sidebar_position: 側邊欄位置
   auto_hide_sidebar: 自動收埋側邊欄
 

@@ -120,6 +120,8 @@ const isFirstTimeActivatedPageChange = ref<boolean>(true)
 watch(
   () => activatedPage.value,
   () => {
+    mainStore.setActivatedCover('')
+
     if (!isFirstTimeActivatedPageChange.value) {
       // Update the URL query parameter when activatedPage changes
       const url = new URL(window.location.href)
@@ -385,28 +387,26 @@ provide<BewlyAppProvider>('BEWLY_APP', {
         height: showBewlyPage || iframePageURL ? '100dvh' : '0',
       }"
     >
-      <template v-if="showBewlyPage">
-        <OverlayScrollbarsComponent ref="scrollbarRef" element="div" h-inherit defer @os-scroll="handleOsScroll">
-          <main m-auto max-w="$bew-page-max-width">
-            <div
-              p="t-[calc(var(--bew-top-bar-height)+10px)]" m-auto
-              w="lg:[calc(100%-200px)] [calc(100%-150px)]"
-            >
-              <!-- control button group -->
-              <BackToTopOrRefreshButton
-                v-if="activatedPage !== AppPage.Search && !settings.moveBackToTopOrRefreshButtonToDock"
-                @refresh="handleThrottledPageRefresh"
-                @back-to-top="handleThrottledBackToTop"
-              />
+      <Transition name="fade">
+        <template v-if="showBewlyPage">
+          <OverlayScrollbarsComponent ref="scrollbarRef" element="div" h-inherit defer @os-scroll="handleOsScroll">
+            <main m-auto max-w="$bew-page-max-width">
+              <div
+                p="t-[calc(var(--bew-top-bar-height)+10px)]" m-auto
+                w="lg:[calc(100%-200px)] [calc(100%-150px)]"
+              >
+                <Transition name="page-fade">
+                  <Component :is="pages[activatedPage]" />
+                </Transition>
+              </div>
+            </main>
+          </OverlayScrollbarsComponent>
+        </template>
+      </Transition>
 
-              <Transition name="page-fade">
-                <Component :is="pages[activatedPage]" />
-              </Transition>
-            </div>
-          </main>
-        </OverlayScrollbarsComponent>
-      </template>
-      <IframePage v-else-if="iframePageURL && !isInIframe()" ref="iframePageRef" :url="iframePageURL" />
+      <Transition v-if="!showBewlyPage && iframePageURL && !isInIframe()" name="fade">
+        <IframePage ref="iframePageRef" :url="iframePageURL" />
+      </Transition>
     </div>
 
     <IframeDrawer

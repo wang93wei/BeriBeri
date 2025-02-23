@@ -7,7 +7,7 @@ import { settings } from '~/logic'
 // TODO: support shortcuts like `Ctrl+Alt+T` to open in new tab, `Esc` to close
 
 const props = defineProps<{
-  url?: string
+  url: string
 }>()
 
 const emit = defineEmits<{
@@ -17,18 +17,30 @@ const emit = defineEmits<{
 const { mainAppRef } = useBewlyApp()
 
 const show = ref(false)
-const headerShow = ref(false)
 const iframeRef = ref<HTMLIFrameElement | null>(null)
 const currentUrl = ref<string>(props.url || 'https://message.bilibili.com/')
+const showIframe = ref(false)
 const delayCloseTimer = ref<NodeJS.Timeout | null>(null)
 
 onMounted(() => {
+  handleOpen()
+})
+
+onActivated(() => {
+  handleOpen()
+})
+
+const beforeUrl = ref<string>('')
+function handleOpen() {
   show.value = true
-  headerShow.value = true
+  if (beforeUrl.value !== props.url) {
+    currentUrl.value = props.url
+    beforeUrl.value = props.url
+  }
   nextTick(() => {
     iframeRef.value?.focus()
   })
-})
+}
 
 onBeforeUnmount(() => {
   releaseIframeResources()
@@ -38,9 +50,8 @@ async function handleClose() {
   if (delayCloseTimer.value) {
     clearTimeout(delayCloseTimer.value)
   }
-  await releaseIframeResources()
+  // await releaseIframeResources()
   show.value = false
-  headerShow.value = false
   delayCloseTimer.value = setTimeout(() => {
     emit('close')
   }, 300)
@@ -124,6 +135,7 @@ nextTick(() => {
 <template>
   <Teleport :to="mainAppRef">
     <div
+      :style="{ pointerEvents: show ? 'auto' : 'none' }"
       pos="fixed top-0 left-0" of-hidden w-full h-full
       z-999999
     >
@@ -138,12 +150,11 @@ nextTick(() => {
 
       <Transition name="drawer">
         <div
-          v-if="show"
+          v-show="show"
           pos="absolute top-0 right-0" of-hidden bg="$bew-bg"
           w="xl:70vw lg:80vw md:100vw 100vw" max-w-1400px h-full
         >
           <div
-            v-if="headerShow"
             pos="fixed top-0 right-0" z-10 flex="~ items-center justify-between gap-2"
             w-inherit max-w-inherit h="$bew-top-bar-height"
             m-auto px-4
@@ -201,15 +212,27 @@ nextTick(() => {
             </div>
           </div>
 
-          <!-- Iframe -->
-          <iframe
-            ref="iframeRef"
-            :src="currentUrl"
-            frameborder="0"
-            pointer-events-auto
-            pos="relative right-0"
-            w-inherit max-w-inherit h-full
-          />
+          <Transition name="fade">
+            <Loading
+              v-if="!showIframe"
+              pos="absolute top-0 right-0" of-hidden
+              w-full h-full
+            />
+          </Transition>
+
+          <Transition name="fade">
+            <!-- Iframe -->
+            <iframe
+              v-show="showIframe"
+              ref="iframeRef"
+              :src="currentUrl"
+              frameborder="0"
+              pointer-events-auto
+              pos="relative right-0"
+              w-inherit
+              max-w-inherit h-full @load="showIframe = true"
+            />
+          </Transition>
         </div>
       </Transition>
     </div>
