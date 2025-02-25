@@ -137,10 +137,9 @@ async function checkGitHubRelease() {
         <img
           :src="`${browser.runtime.getURL('/assets/bewly-vtuber-style-logo.png')}`" alt="" width="200"
         >
-
         <a
-          v-if="hasNewVersion"
-          href="https://github.com/hakadao/BewlyBewly/releases" target="_blank"
+          v-if=" hasNewVersion" href="https://github.com/TC999/BewlyBewly-Beta/releases"
+          target="_blank"
           pos="absolute bottom-0 right-0" transform="translate-x-50%" un-text="xs $bew-text-1" p="y-1 x-2" bg="$bew-fill-1"
           rounded-12
         >
@@ -149,7 +148,7 @@ async function checkGitHubRelease() {
       </div>
       <section text-2xl text-center mt-2>
         <p flex="inline gap-2" fw-900>
-          <span>BewlyBewly</span>
+          <span>BewlyBewly-Beta</span>
           <span
             v-if="isDev"
             inline-block text="$bew-warning-color"
@@ -159,7 +158,7 @@ async function checkGitHubRelease() {
         </p>
         <p text-center>
           <a
-            href="https://github.com/hakadao/BewlyBewly/releases" target="_blank"
+            href="https://github.com/TC999/BewlyBewly-Beta/releases" target="_blank"
             un-text="sm color-$bew-text-2 hover:color-$bew-text-3"
           >
             v{{ version }}
@@ -178,7 +177,7 @@ async function checkGitHubRelease() {
           </h3>
           <div grid="~ xl:cols-6 lg:cols-5 md:cols-4 cols-3 gap-2">
             <a
-              href="https://github.com/hakadao/BewlyBewly" target="_blank"
+              href="https://github.com/TC999/BewlyBewly-Beta" target="_blank"
               class="link-card"
               bg="black dark:white !opacity-10 !hover:opacity-20"
               un-text="black dark:white"
