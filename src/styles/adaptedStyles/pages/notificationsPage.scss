@@ -489,7 +489,8 @@ html.bewly-design.notificationsPage {
     .group-helper-msg-list,
     .tab-list .tab-item.active::before,
     .group-helper-msg-list::after,
-    .cs-actions-wrap {
+    .cs-actions-wrap,
+    .msg-notify {
       background-color: var(--bew-elevated-solid);
     }
 
