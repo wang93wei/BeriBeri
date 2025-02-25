@@ -47,13 +47,13 @@
 
   // Use this to imitate the frosted glass edge effect in components with a frosted glass design (except dialogs)
   // 在采用磨砂玻璃设计的组件（对话框除外）中，使用此功能可模仿磨砂玻璃边缘效果
-  --bew-shadow-edge-glow-1: inset 1px 1px 1px -0.5px rgba(255, 255, 255, 0.2),
-    inset -1px -1px 1px -0.5px rgba(255, 255, 255, 0.12), inset 0 0 10px rgba(255, 255, 255, 0.6);
+  --bew-shadow-edge-glow-1: inset 1px 1px 1px -0.5px rgba(255, 255, 255, 0.34),
+    inset -1px -1px 1px -0.5px rgba(255, 255, 255, 0.14), inset 0 0 10px rgba(255, 255, 255, 0.6);
 
   // Use this for dialogs with the frosted glass effect
   // 将其用于具有磨砂玻璃效果的对话框
-  --bew-shadow-edge-glow-2: inset 1px 1px 1px -0.5px rgba(255, 255, 255, 0.2),
-    inset -1px -1px 1px -0.5px rgba(255, 255, 255, 0.12), inset 0 0 14px rgba(255, 255, 255, 0.62);
+  --bew-shadow-edge-glow-2: inset 1px 1px 1px -0.5px rgba(255, 255, 255, 0.34),
+    inset -1px -1px 1px -0.5px rgba(255, 255, 255, 0.14), inset 0 0 14px rgba(255, 255, 255, 0.62);
 
   // #endregion
 
@@ -300,6 +300,13 @@
   --bew-filter-glass-2: blur(20px) saturate(180%);
 }
 
+:host(.disable-shadow),
+:root.disable-shadow {
+  --bew-shadow-1: 0 0 0 transparent;
+  --bew-shadow-2: 0 0 0 transparent;
+  --bew-shadow-3: 0 0 0 transparent;
+  --bew-shadow-4: 0 0 0 transparent;
+}
 :root.bewly-design,
 :root.bewly-design * {
   --brand_pink: var(--bew-theme-color);

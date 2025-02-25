@@ -161,8 +161,8 @@ function handleBackToTopOrRefresh(action: 'backToTop' | 'refresh' | 'auto' = 'au
     emit('backToTop')
   }
   else if (action === 'refresh') {
-    emit('backToTop')
     emit('refresh')
+    emit('backToTop')
   }
   else {
     if (reachTop.value)
@@ -183,8 +183,8 @@ const dockScale = computed((): number => {
   if (!dockHeight.value || !dockWidth.value)
     return 1
 
-  const maxAllowedHeight = windowHeight.value - 100
-  const maxAllowedWidth = windowWidth.value - 100
+  const maxAllowedHeight = windowHeight.value - 180
+  const maxAllowedWidth = windowWidth.value - 180
 
   // Calculate scale factors for both dimensions
   const heightScale = dockHeight.value > maxAllowedHeight
@@ -202,6 +202,7 @@ const dockScale = computed((): number => {
 const dockTransformStyle = computed((): { transform: string, transformOrigin: string } => {
   const position = settings.value.dockPosition
   const scale = dockScale.value
+  dockContentRef.value?.style.setProperty('--scale', `${scale}`)
 
   // Adjust origin based on dock position
   const origin = {
@@ -340,9 +341,14 @@ const dockTransformStyle = computed((): { transform: string, transformOrigin: st
       <!-- Back to top & refresh buttons -->
       <div
         v-if="showBackToTopOrRefreshButton"
-        pos="absolute bottom-0"
-        transform="translate-y-100%"
-        flex="~ col gap-2"
+        :style="{
+          bottom: settings.dockPosition === 'bottom' ? 'unset' : 0,
+          right: settings.dockPosition === 'bottom' ? 0 : 'unset',
+          transform: settings.dockPosition === 'bottom' ? 'translate(100%, 0)' : 'translateY(100%)',
+          flexDirection: settings.dockPosition === 'bottom' ? 'row' : 'column',
+        }"
+        pos="absolute"
+        flex="~ gap-2"
       >
         <template
           v-if="settings.backToTopAndRefreshButtonsAreSeparated"
@@ -426,7 +432,7 @@ const dockTransformStyle = computed((): { transform: string, transformOrigin: st
 }
 
 .dock-content {
-  --uno: "absolute flex justify-center items-center duration-300";
+  --uno: "absolute flex justify-center items-center duration-300 scale-$scale";
 
   &.left {
     --uno: "left-2 after:right--4px";
@@ -435,7 +441,7 @@ const dockTransformStyle = computed((): { transform: string, transformOrigin: st
     --uno: "opacity-0 !translate-x--100%";
   }
   &.left.half-hide:not(.hover) {
-    --uno: "!opacity-60 !translate-x-[calc(-50%-8px)]";
+    --uno: "!opacity-60 !translate-x--50%";
   }
 
   &.right {
@@ -445,7 +451,7 @@ const dockTransformStyle = computed((): { transform: string, transformOrigin: st
     --uno: "opacity-0 !translate-x-100%";
   }
   &.right.half-hide:not(.hover) {
-    --uno: "!opacity-60 !translate-x-[calc(50%+8px)]";
+    --uno: "!opacity-60 !translate-x-50%";
   }
 
   &.bottom {
@@ -455,7 +461,7 @@ const dockTransformStyle = computed((): { transform: string, transformOrigin: st
     --uno: "opacity-0 !translate-y-100%";
   }
   &.bottom.half-hide:not(.hover) {
-    --uno: "!opacity-60 !translate-y-[calc(50%+8px)]";
+    --uno: "!opacity-60 !translate-y-50%";
   }
 
   .divider {
