@@ -12,12 +12,14 @@ export interface Settings {
   enableHorizontalScrolling: boolean
 
   language: string
-  customizeFont: boolean
+  customizeFont: 'default' | 'recommend' | 'custom'
   fontFamily: string
   overrideDanmakuFont: boolean
   removeTheIndentFromChinesePunctuation: boolean
+
   disableFrostedGlass: boolean
   reduceFrostedGlassBlur: boolean
+  disableShadow: boolean
 
   enableVideoPreview: boolean
 
@@ -36,17 +38,23 @@ export interface Settings {
   // Desktop & Dock
   useOldTopBar: boolean
   autoHideTopBar: boolean
+  showTopBarThemeColorGradient: boolean
+  showBewlyOrBiliTopBarSwitcher: boolean
   showBewlyOrBiliPageSwitcher: boolean
   topBarIconBadges: 'number' | 'dot' | 'none'
+  openNotificationsPageAsDrawer: boolean
+
   alwaysUseDock: boolean
   autoHideDock: boolean
+  halfHideDock: boolean
   dockPosition: 'left' | 'right' | 'bottom'
   /** @deprecated use dockItemsConfig instead */
   dockItemVisibilityList: { page: AppPage, visible: boolean }[]
   dockItemsConfig: { page: AppPage, visible: boolean, openInNewTab: boolean, useOriginalBiliPage: boolean }[]
   disableDockGlowingEffect: boolean
   disableLightDarkModeSwitcherOnDock: boolean
-  moveBackToTopOrRefreshButtonToDock: boolean
+  backToTopAndRefreshButtonsAreSeparated: boolean
+
   sidebarPosition: 'left' | 'right'
   autoHideSidebar: boolean
 
@@ -109,13 +117,14 @@ export const originalSettings: Settings = {
   enableHorizontalScrolling: false,
 
   language: '',
-  customizeFont: false,
+  customizeFont: 'recommend',
   fontFamily: '',
   overrideDanmakuFont: true,
   removeTheIndentFromChinesePunctuation: false,
 
   disableFrostedGlass: true,
   reduceFrostedGlassBlur: false,
+  disableShadow: false,
 
   // Link Opening Behavior
   videoCardLinkOpenMode: 'newTab',
@@ -133,17 +142,23 @@ export const originalSettings: Settings = {
   // Desktop & Dock
   useOldTopBar: false,
   autoHideTopBar: false,
+  showTopBarThemeColorGradient: true,
+  showBewlyOrBiliTopBarSwitcher: true,
   showBewlyOrBiliPageSwitcher: true,
   topBarIconBadges: 'number',
+  openNotificationsPageAsDrawer: true,
+
   alwaysUseDock: false,
   autoHideDock: false,
+  halfHideDock: false,
   dockPosition: 'right',
   /** @deprecated use dockItemsConfig instead */
   dockItemVisibilityList: [],
   dockItemsConfig: [],
   disableDockGlowingEffect: false,
   disableLightDarkModeSwitcherOnDock: false,
-  moveBackToTopOrRefreshButtonToDock: true,
+  backToTopAndRefreshButtonsAreSeparated: true,
+
   sidebarPosition: 'right',
   autoHideSidebar: false,
 
@@ -187,7 +202,7 @@ export const originalSettings: Settings = {
   enableFilterByUser: false,
   filterByUser: [],
 
-  followingTabShowLivestreamingVideos: true,
+  followingTabShowLivestreamingVideos: false,
 
   homePageTabVisibilityList: [],
   alwaysShowTabsOnHomePage: false,

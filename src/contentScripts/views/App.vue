@@ -9,7 +9,7 @@ import { AppPage } from '~/enums/appEnums'
 import { settings } from '~/logic'
 import { type DockItem, useMainStore } from '~/stores/mainStore'
 import { useSettingsStore } from '~/stores/settingsStore'
-import { isHomePage, isInIframe, openLinkToNewTab, queryDomUntilFound, scrollToTop } from '~/utils/main'
+import { isHomePage, isInIframe, isNotificationPage, isVideoOrBangumiPage, openLinkToNewTab, queryDomUntilFound, scrollToTop } from '~/utils/main'
 import emitter from '~/utils/mitt'
 
 import { setupNecessarySettingsWatchers } from './necessarySettingsWatchers'
@@ -93,11 +93,35 @@ const showBewlyPage = computed((): boolean => {
 
   return isHomePage() && !settings.value.useOriginalBilibiliHomepage
 })
+const showTopBar = computed((): boolean => {
+  // When using the open in drawer feature, the iframe inside the page will hide the top bar
+  if (isVideoOrBangumiPage() && isInIframe())
+    return false
+
+  // when user open the notifications page as a drawer, don't show the top bar
+  if (isNotificationPage() && settings.value.openNotificationsPageAsDrawer && isInIframe())
+    return false
+
+  // When the user switches to the original Bilibili page, BewlyBewly will only show the top bar inside the iframe.
+  // This helps prevent the outside top bar from covering the contents.
+  // reference: https://github.com/BewlyBewly/BewlyBewly/issues/1235
+
+  // when using original bilibili homepage, show top bar
+  return settings.value.useOriginalBilibiliHomepage
+  // when on home page and not using original bilibili page, show top bar
+    || (isHomePage() && !settingsStore.getDockItemIsUseOriginalBiliPage(activatedPage.value) && !isInIframe())
+  // when in iframe and using original bilibili page, show top bar
+    || (settingsStore.getDockItemIsUseOriginalBiliPage(activatedPage.value) && isInIframe())
+  // when not on home page, show top bar
+    || !isHomePage()
+})
 
 const isFirstTimeActivatedPageChange = ref<boolean>(true)
 watch(
   () => activatedPage.value,
   () => {
+    mainStore.setActivatedCover('')
+
     if (!isFirstTimeActivatedPageChange.value) {
       // Update the URL query parameter when activatedPage changes
       const url = new URL(window.location.href)
@@ -113,6 +137,19 @@ watch(
   },
   { immediate: true },
 )
+
+watch([() => showTopBar.value, () => activatedPage.value], () => {
+  // Remove the original Bilibili top bar when using original bilibili page to avoid two top bars showing
+  const biliHeader = document.querySelector('.bili-header') as HTMLElement | null
+  if (biliHeader && isHomePage()) {
+    if (settingsStore.getDockItemIsUseOriginalBiliPage(activatedPage.value) && !isInIframe()) {
+      biliHeader.style.visibility = 'hidden'
+    }
+    else {
+      biliHeader.style.visibility = 'visible'
+    }
+  }
+}, { immediate: true })
 
 // Setup necessary settings watchers
 setupNecessarySettingsWatchers()
@@ -143,6 +180,9 @@ function handleDockItemClick(dockItem: DockItem) {
     if (dockItem.useOriginalBiliPage) {
       // It seem like the `activatedPage` watcher above will handle this, so no need to set iframePageURL.value here
       // iframePageURL.value = dockItem.url
+      if (!isHomePage()) {
+        location.href = `https://www.bilibili.com/?page=${dockItem.page}`
+      }
     }
     else {
       if (isHomePage()) {
@@ -214,7 +254,13 @@ function openIframeDrawer(url: string) {
   const currentUrl = new URL(location.href)
   const destination = new URL(url)
 
-  if (!isSameOrigin(currentUrl, destination)) {
+  try {
+    if (!isSameOrigin(currentUrl, destination)) {
+      openLinkToNewTab(url)
+      return
+    }
+  }
+  catch {
     openLinkToNewTab(url)
     return
   }
@@ -230,9 +276,15 @@ function openIframeDrawer(url: string) {
 async function haveScrollbar() {
   await nextTick()
   const osInstance = scrollbarRef.value?.osInstance()
-  const { viewport } = osInstance.elements()
-  const { scrollHeight } = viewport // get scroll offset
-  return scrollHeight > window.innerHeight
+  // If the scrollbarRef is not ready, return false
+  if (osInstance) {
+    const { viewport } = osInstance.elements()
+    const { scrollHeight } = viewport // get scroll offset
+    return scrollHeight > window.innerHeight
+  }
+  else {
+    return false
+  }
 }
 
 // In drawer video, watch btn className changed and post message to parent
@@ -283,7 +335,7 @@ provide<BewlyAppProvider>('BEWLY_APP', {
     ref="mainAppRef"
     class="bewly-wrapper"
     :class="{ dark: isDark }"
-    text="$bew-text-1"
+    text="$bew-text-1 size-$bew-base-font-size"
   >
     <!-- Background -->
     <template v-if="showBewlyPage">
@@ -302,7 +354,7 @@ provide<BewlyAppProvider>('BEWLY_APP', {
       pointer-events-none
     >
       <Dock
-        v-if="settings.alwaysUseDock || (showBewlyPage || iframePageURL)"
+        v-if="!settings.useOriginalBilibiliHomepage && (settings.alwaysUseDock || (showBewlyPage || iframePageURL))"
         pointer-events-auto
         :activated-page="activatedPage"
         @settings-visibility-change="toggleSettings"
@@ -319,19 +371,11 @@ provide<BewlyAppProvider>('BEWLY_APP', {
 
     <!-- TopBar -->
     <div
-      v-if="
-        // When the user switches to the original Bilibili page, BewlyBewly will only show the top bar inside the iframe.
-        // This helps prevent the outside top bar from covering the contents.
-        // reference: https://github.com/BewlyBewly/BewlyBewly/issues/1235
-
-        // when on home page and not using original bilibili page, show top bar
-        (isHomePage() && !settingsStore.getDockItemIsUseOriginalBiliPage(activatedPage) && !isInIframe())
-          // when in iframe and using original bilibili page, show top bar
-          || (settingsStore.getDockItemIsUseOriginalBiliPage(activatedPage) && isInIframe())
-          // when not on home page, show top bar
-          || !isHomePage()"
+      v-if="showTopBar"
       m-auto max-w="$bew-page-max-width"
     >
+      <BewlyOrBiliTopBarSwitcher v-if="settings.showBewlyOrBiliTopBarSwitcher" />
+
       <OldTopBar
         v-if="settings.useOldTopBar"
         pos="top-0 left-0" z="99 hover:1001" w-full
@@ -349,28 +393,26 @@ provide<BewlyAppProvider>('BEWLY_APP', {
         height: showBewlyPage || iframePageURL ? '100dvh' : '0',
       }"
     >
-      <template v-if="showBewlyPage">
-        <OverlayScrollbarsComponent ref="scrollbarRef" element="div" h-inherit defer @os-scroll="handleOsScroll">
-          <main m-auto max-w="$bew-page-max-width">
-            <div
-              p="t-[calc(var(--bew-top-bar-height)+10px)]" m-auto
-              w="lg:[calc(100%-200px)] [calc(100%-150px)]"
-            >
-              <!-- control button group -->
-              <BackToTopOrRefreshButton
-                v-if="activatedPage !== AppPage.Search && !settings.moveBackToTopOrRefreshButtonToDock"
-                @refresh="handleThrottledPageRefresh"
-                @back-to-top="handleThrottledBackToTop"
-              />
+      <Transition name="fade">
+        <template v-if="showBewlyPage">
+          <OverlayScrollbarsComponent ref="scrollbarRef" element="div" h-inherit defer @os-scroll="handleOsScroll">
+            <main m-auto max-w="$bew-page-max-width">
+              <div
+                p="t-[calc(var(--bew-top-bar-height)+10px)]" m-auto
+                w="lg:[calc(100%-200px)] [calc(100%-150px)]"
+              >
+                <Transition name="page-fade">
+                  <Component :is="pages[activatedPage]" />
+                </Transition>
+              </div>
+            </main>
+          </OverlayScrollbarsComponent>
+        </template>
+      </Transition>
 
-              <Transition name="page-fade">
-                <Component :is="pages[activatedPage]" />
-              </Transition>
-            </div>
-          </main>
-        </OverlayScrollbarsComponent>
-      </template>
-      <IframePage v-else-if="iframePageURL && !isInIframe()" ref="iframePageRef" :url="iframePageURL" />
+      <Transition v-if="!showBewlyPage && iframePageURL && !isInIframe()" name="fade">
+        <IframePage ref="iframePageRef" :url="iframePageURL" />
+      </Transition>
     </div>
 
     <IframeDrawer
@@ -383,8 +425,6 @@ provide<BewlyAppProvider>('BEWLY_APP', {
 
 <style lang="scss" scoped>
 .bewly-wrapper {
-  --uno: "text-size-$bew-base-font-size";
-
   // To fix the filter used in `.bewly-wrapper` that cause the positions of elements become discorded.
   > * > * {
     filter: var(--bew-filter-force-dark);

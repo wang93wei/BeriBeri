@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { useEventListener } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 
 import { settings } from '~/logic'
+import { createTransformer } from '~/utils/transformer'
 
 import type { MenuItem } from './types'
 import { MenuType } from './types'
@@ -21,6 +23,20 @@ const settingsMenu = {
 }
 const activatedMenuItem = ref<MenuType>(MenuType.General)
 const title = ref<string>(t('settings.title'))
+const settingsWindow = ref<HTMLDivElement>()
+
+useEventListener(window, 'resize', () => {
+  createTransformer(settingsWindow, {
+    x: '50%',
+    y: '50%',
+    notrigger: true,
+    centerTarget: {
+      x: true,
+      y: true,
+    },
+  })
+})
+
 const scrollbarRef = ref()
 
 watch(
@@ -112,11 +128,12 @@ function setCurrentTitle() {
       class="fixed w-full h-full top-0 left-0"
       @click="handleClose"
     />
-
     <div
-      id="settings-window" pos="fixed top-1/2 left-1/2" w="90%" h="90%"
+      id="settings-window"
+      ref="settingsWindow"
+      pos="fixed top-1/2 left-1/2" w="90%" h="90%"
       max-w-1000px max-h-900px transform="~ translate-x--1/2 translate-y--1/2 gpu"
-      flex justify-between items-center
+      flex="~ justify-between items-center"
     >
       <aside
         :class="{ group: !settings.touchScreenOptimization }"
@@ -124,24 +141,28 @@ function setCurrentTitle() {
       >
         <ul
           style="
-            --un-shadow: var(--bew-shadow-4), var(--bew-shadow-edge-glow-2);
+            box-shadow: var(--bew-shadow-4);
           "
-          relative flex="~ gap-2 col" rounded="30px group-hover:25px" p-2 shadow
+          relative flex="~ gap-2 col" rounded="30px group-hover:25px" p-2
           bg="$bew-content-alt group-hover:$bew-elevated dark:$bew-elevated dark-group-hover:$bew-elevated"
           scale="group-hover:105" duration-300 overflow-hidden antialiased transform-gpu
-          border="1 $bew-border-color"
         >
           <!-- frosted glass background -->
           <!-- https://github.com/BewlyBewly/BewlyBewly/issues/1162 -->
           <div
-            style="backdrop-filter: var(--bew-filter-glass-2);"
+            style="
+              box-shadow: var(--bew-shadow-edge-glow-2);
+              backdrop-filter: var(--bew-filter-glass-2);
+            "
             pos="absolute top-0 left-0" z--1
             w-full h-full pointer-events-none
+            border="1 $bew-border-color" transform-gpu
+            rounded-inherit duration-inherit
           />
 
           <li v-for="menuItem in settingsMenuItems" :key="menuItem.value">
             <a
-              cursor-pointer w="40px group-hover:180px" h-40px
+              cursor-pointer w="40px group-hover:190px" h-40px
               rounded-30px flex items-center overflow-x-hidden
               duration-300 bg="hover:$bew-fill-2"
               :class="{ 'menu-item-activated': menuItem.value === activatedMenuItem }"
@@ -169,7 +190,7 @@ function setCurrentTitle() {
           --un-shadow: var(--bew-shadow-4), var(--bew-shadow-edge-glow-2);
           backdrop-filter: var(--bew-filter-glass-2);
         "
-        relative overflow="x-hidde" w-full h-full bg="$bew-elevated-alt"
+        relative overflow="x-hidden" w-full h-full bg="$bew-elevated-alt"
         shadow rounded="$bew-radius" border="1 $bew-border-color" transform-gpu
       >
         <header

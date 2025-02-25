@@ -1,6 +1,6 @@
 # BewlyBewly
 
-[English](README.md) | [官话 - 简体中文](README-cmn_CN.md) | [官話 - 正體中文](README-cmn_TW.md) | 廣東話
+[English](README.md) | [官话 - 简体中文](README-cmn_CN.md) | [官話 - 繁体中文](README-cmn_TW.md) | 廣東話
 
 <p align="center" style="margin-bottom: 0px !important;">
 <img width="300" alt="BewlyBewly icon" src="https://cdn.jsdelivr.net/gh/BewlyBewly/Imgs/logos/bewlybewly-vtuber-logo.png"><br/>
@@ -17,6 +17,10 @@
 > BewlyBewly 主要着重頁面調整同埋改善, 而唔係完善功能同提升效率
 >
 > 事關考慮到維護嘅效率同埋難度, 深色模式淨係會適應常用頁面, 一啲冇咁常用嘅頁面唔會適應調整
+
+> [!CAUTION]
+> [BLBewly](https://apps.apple.com/us/app/blbewly/id6742200021) 係 Safari 上嘅免費 BewlyBewly 延伸功能。我哋感謝 [𝗦𝘁𝗲𝘃𝗲 𝕏](https://x.com/st7evechou) 幫手免費將應用程式發佈到 Safari。
+> 但係，Safari 版本遇到嘅問題唔喺我哋嘅維護範圍內，我哋唔會考慮 Safari 維護。
 
 > [!CAUTION]
 > 如果你單緊呢個延伸功能，你嘅瀏覽器可能會話佢可以睇到你嘅瀏覽紀錄。

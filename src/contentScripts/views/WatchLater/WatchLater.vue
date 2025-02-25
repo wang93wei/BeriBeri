@@ -5,12 +5,14 @@ import { useI18n } from 'vue-i18n'
 import { useBewlyApp } from '~/composables/useAppProvider'
 import { settings } from '~/logic'
 import type { List as VideoItem, WatchLaterResult } from '~/models/video/watchLater'
+import { useMainStore } from '~/stores/mainStore'
 import api from '~/utils/api'
 import { calcCurrentTime } from '~/utils/dataFormatter'
 import { getCSRF, openLinkToNewTab, removeHttpFromUrl } from '~/utils/main'
 
 const { t } = useI18n()
 const { openIframeDrawer } = useBewlyApp()
+const { setActivatedCover } = useMainStore()
 
 const isLoading = ref<boolean>()
 const noMoreContent = ref<boolean>()
@@ -70,7 +72,7 @@ async function getAllWatchLaterList() {
   }
 }
 
-function getCurrentWatchLaterList() {
+async function getCurrentWatchLaterList() {
   const allWatchLaterListCopy = JSON.parse(JSON.stringify(allWatchLaterList.value))
   const currentList = allWatchLaterListCopy.slice((pageNum.value - 1) * 10, pageNum.value * 10)
 
@@ -81,7 +83,7 @@ function getCurrentWatchLaterList() {
   pageNum.value++
   currentWatchLaterList.value.push(...currentList)
 
-  if (!haveScrollbar() && !noMoreContent.value) {
+  if (!await haveScrollbar() && !noMoreContent.value) {
     getCurrentWatchLaterList()
   }
 }
@@ -151,6 +153,10 @@ function handleLinkClick(url: string) {
 function jumpToLoginPage() {
   location.href = 'https://passport.bilibili.com/login'
 }
+
+function handleMouseEnter(item: VideoItem) {
+  setActivatedCover(`${removeHttpFromUrl(item.pic)}@480w_270h_1c`)
+}
 </script>
 
 <template>
@@ -170,6 +176,7 @@ function jumpToLoginPage() {
             type="videoCard"
             class="group"
             flex cursor-pointer
+            @mouseenter="handleMouseEnter(item)"
           >
             <section
               rounded="$bew-radius"

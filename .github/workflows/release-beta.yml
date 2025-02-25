@@ -2,6 +2,11 @@ name: 测试版编译
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: 版本号
+        required: true
+        default: 0.0.0
 jobs:
   test:
     name: 测试
@@ -16,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set node ${{ matrix.node }}
+      - name: 设置 node ${{ matrix.node }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
@@ -26,6 +31,9 @@ jobs:
         with:
           run_install: |
             - args: [--frozen-lockfile]
+
+      - name: 引用签名密钥
+        run: echo "${{ secrets.KEY_PEM }}" | tr '\n' '\n' > key.pem
 
       - name: 安装依赖
         run: pnpm install
@@ -42,11 +50,23 @@ jobs:
       - name: Firefox 打包
         run: pnpm pack:xpi
 
-      - name: 上传
-        uses: actions/upload-artifact@v4.3.1
+      # - name: 上传
+      #   uses: actions/upload-artifact@v4.3.1
+      #   with:
+      #     name: extension
+      #     path: |
+      #       extension.crx
+      #       extension.zip
+      #       extension.xpi
+
+      - name: 创建发行版
+        uses: softprops/action-gh-release@v2
         with:
-          name: extension
-          path: |
+          name: ${{ inputs.version }}
+          tag_name: ${{ inputs.version }}
+          draft: false
+          make_latest: true
+          files: |
             extension.crx
             extension.zip
             extension.xpi

@@ -5,11 +5,12 @@ import { computed, ref } from 'vue'
 
 import { useBewlyApp } from '~/composables/useAppProvider'
 import { useDark } from '~/composables/useDark'
+import { useDelayedHover } from '~/composables/useDelayedHover'
 import { AppPage } from '~/enums/appEnums'
 import { settings } from '~/logic'
 import type { DockItem } from '~/stores/mainStore'
 import { useMainStore } from '~/stores/mainStore'
-import { isHomePage } from '~/utils/main'
+import { isHomePage, openLinkToNewTab } from '~/utils/main'
 
 import Tooltip from '../Tooltip.vue'
 import type { HoveringDockItem } from './types'
@@ -21,6 +22,7 @@ const props = defineProps<{
 // const emit = defineEmits(['pageChange', 'settingsVisibilityChange', 'refresh', 'backToTop'])
 const emit = defineEmits<{
   (e: 'dockItemClick', dockItem: DockItem): void
+  (e: 'dockItemMiddleClick', dockItem: DockItem): void
   (e: 'settingsVisibilityChange'): void
   (e: 'refresh'): void
   (e: 'backToTop'): void
@@ -31,6 +33,20 @@ const { isDark, toggleDark } = useDark()
 const { reachTop } = useBewlyApp()
 
 const hideDock = ref<boolean>(false)
+const dockContentHover = ref<boolean>(false)
+const dockContentRef = useDelayedHover({
+  enterDelay: 100,
+  leaveDelay: 600,
+  enter: () => {
+    dockContentHover.value = true
+    toggleHideDock(false)
+  },
+  leave: () => {
+    dockContentHover.value = false
+    toggleHideDock(true)
+  },
+})
+
 const hoveringDockItem = reactive<HoveringDockItem>({
   themeMode: false,
   settings: false,
@@ -57,8 +73,7 @@ const showBackToTopOrRefreshButton = computed((): boolean => {
     return false
   }
 
-  return settings.value.moveBackToTopOrRefreshButtonToDock
-    && props.activatedPage !== AppPage.Search && isHomePage()
+  return props.activatedPage !== AppPage.Search && isHomePage()
 })
 
 watch(() => settings.value.autoHideDock, (newValue) => {
@@ -126,23 +141,41 @@ function toggleHideDock(hide: boolean) {
     hideDock.value = false
 }
 
-function handleDockItemClick(dockItem: DockItem) {
+function handleDockItemClick($event: MouseEvent, dockItem: DockItem) {
+  if ($event.ctrlKey || $event.metaKey) {
+    openDockItemInNewTab(dockItem)
+    return
+  }
+
   activatedDockItem.value = dockItem
   emit('dockItemClick', dockItem)
 }
 
-function handleBackToTopOrRefresh() {
-  if (reachTop.value)
-    emit('refresh')
-  else
+function openDockItemInNewTab(dockItem: DockItem) {
+  activatedDockItem.value = dockItem
+  openLinkToNewTab(`https://www.bilibili.com/?page=${dockItem.page}`)
+}
+
+function handleBackToTopOrRefresh(action: 'backToTop' | 'refresh' | 'auto' = 'auto') {
+  if (action === 'backToTop') {
     emit('backToTop')
+  }
+  else if (action === 'refresh') {
+    emit('refresh')
+    emit('backToTop')
+  }
+  else {
+    if (reachTop.value)
+      emit('refresh')
+    else
+      emit('backToTop')
+  }
 }
 
 function isDockItemActivated(dockItem: DockItem): boolean {
   return props.activatedPage === dockItem.page && isHomePage()
 }
 
-const dockContentRef = ref<HTMLElement>()
 const { width: windowWidth, height: windowHeight } = useWindowSize()
 const { width: dockWidth, height: dockHeight } = useElementSize(dockContentRef)
 
@@ -150,8 +183,8 @@ const dockScale = computed((): number => {
   if (!dockHeight.value || !dockWidth.value)
     return 1
 
-  const maxAllowedHeight = windowHeight.value - 100
-  const maxAllowedWidth = windowWidth.value - 100
+  const maxAllowedHeight = windowHeight.value - 180
+  const maxAllowedWidth = windowWidth.value - 180
 
   // Calculate scale factors for both dimensions
   const heightScale = dockHeight.value > maxAllowedHeight
@@ -169,6 +202,7 @@ const dockScale = computed((): number => {
 const dockTransformStyle = computed((): { transform: string, transformOrigin: string } => {
   const position = settings.value.dockPosition
   const scale = dockScale.value
+  dockContentRef.value?.style.setProperty('--scale', `${scale}`)
 
   // Adjust origin based on dock position
   const origin = {
@@ -187,7 +221,7 @@ const dockTransformStyle = computed((): { transform: string, transformOrigin: st
 <template>
   <aside
     class="dock-wrap"
-    pos="fixed top-0" flex="~ col justify-center items-center" w-full h-full
+    pos="fixed top-0" z-100 flex="~ col justify-center items-center" w-full h-full
     z-10 pointer-events-none
   >
     <!-- Edge Div -->
@@ -204,10 +238,12 @@ const dockTransformStyle = computed((): { transform: string, transformOrigin: st
       ref="dockContentRef"
       class="dock-content"
       :class="{
-        left: settings.dockPosition === 'left',
-        right: settings.dockPosition === 'right',
-        bottom: settings.dockPosition === 'bottom',
-        hide: hideDock,
+        'left': settings.dockPosition === 'left',
+        'right': settings.dockPosition === 'right',
+        'bottom': settings.dockPosition === 'bottom',
+        'hide': hideDock,
+        'half-hide': settings.halfHideDock,
+        'hover': dockContentHover,
       }"
       :style="dockTransformStyle"
       @mouseenter="toggleHideDock(false)"
@@ -225,7 +261,8 @@ const dockTransformStyle = computed((): { transform: string, transformOrigin: st
                 'inactive': hoveringDockItem.themeMode && isDark,
                 'disable-glowing-effect': settings.disableDockGlowingEffect,
               }"
-              @click="handleDockItemClick(dockItem)"
+              @click="handleDockItemClick($event, dockItem)"
+              @click.middle="openDockItemInNewTab(dockItem)"
             >
               <div
                 v-show="!isDockItemActivated(dockItem)"
@@ -301,27 +338,68 @@ const dockTransformStyle = computed((): { transform: string, transformOrigin: st
         </Tooltip>
       </div>
 
-      <button
+      <!-- Back to top & refresh buttons -->
+      <div
         v-if="showBackToTopOrRefreshButton"
-        class="back-to-top-or-refresh-btn"
-        :class="{
-          inactive: hoveringDockItem.themeMode && isDark,
+        :style="{
+          bottom: settings.dockPosition === 'bottom' ? 'unset' : 0,
+          right: settings.dockPosition === 'bottom' ? 0 : 'unset',
+          transform: settings.dockPosition === 'bottom' ? 'translate(100%, 0)' : 'translateY(100%)',
+          flexDirection: settings.dockPosition === 'bottom' ? 'row' : 'column',
         }"
-        @click="handleBackToTopOrRefresh"
+        pos="absolute"
+        flex="~ gap-2"
       >
-        <Transition name="fade">
-          <Icon
-            v-if="reachTop"
-            icon="line-md:rotate-270"
-            shrink-0 rotate-90 absolute text-2xl
-          />
-          <Icon
-            v-else
-            icon="line-md:arrow-small-up"
-            shrink-0 absolute text-2xl
-          />
-        </Transition>
-      </button>
+        <template
+          v-if="settings.backToTopAndRefreshButtonsAreSeparated"
+        >
+          <template v-for="key in 2" :key="key">
+            <Transition name="fade">
+              <button
+                v-if="key === 1 || key === 2 && !reachTop"
+                class="back-to-top-or-refresh-btn"
+                :class="{
+                  inactive: hoveringDockItem.themeMode && isDark,
+                }"
+                @click="handleBackToTopOrRefresh(key === 1 ? 'refresh' : 'backToTop')"
+              >
+                <Icon
+                  v-if="key === 1"
+                  icon="line-md:rotate-270"
+                  shrink-0 rotate-90 absolute text-2xl
+                />
+                <Icon
+                  v-else
+                  icon="line-md:arrow-small-up"
+                  shrink-0 absolute text-2xl
+                />
+              </button>
+            </Transition>
+          </template>
+        </template>
+        <template v-else>
+          <button
+            class="back-to-top-or-refresh-btn"
+            :class="{
+              inactive: hoveringDockItem.themeMode && isDark,
+            }"
+            @click="handleBackToTopOrRefresh('auto')"
+          >
+            <Transition name="fade">
+              <Icon
+                v-if="reachTop"
+                icon="line-md:rotate-270"
+                shrink-0 rotate-90 absolute text-2xl
+              />
+              <Icon
+                v-else
+                icon="line-md:arrow-small-up"
+                shrink-0 absolute text-2xl
+              />
+            </Transition>
+          </button>
+        </template>
+      </div>
     </div>
   </aside>
 </template>
@@ -354,27 +432,36 @@ const dockTransformStyle = computed((): { transform: string, transformOrigin: st
 }
 
 .dock-content {
-  --uno: "absolute flex justify-center items-center duration-300";
+  --uno: "absolute flex justify-center items-center duration-300 scale-$scale";
 
   &.left {
     --uno: "left-2 after:right--4px";
   }
-  &.left.hide {
+  &.left.hide:not(.hover) {
     --uno: "opacity-0 !translate-x--100%";
+  }
+  &.left.half-hide:not(.hover) {
+    --uno: "!opacity-60 !translate-x--50%";
   }
 
   &.right {
     --uno: "right-2 after:left--4px";
   }
-  &.right.hide {
+  &.right.hide:not(.hover) {
     --uno: "opacity-0 !translate-x-100%";
+  }
+  &.right.half-hide:not(.hover) {
+    --uno: "!opacity-60 !translate-x-50%";
   }
 
   &.bottom {
     --uno: "top-unset bottom-0";
   }
-  &.bottom.hide {
+  &.bottom.hide:not(.hover) {
     --uno: "opacity-0 !translate-y-100%";
+  }
+  &.bottom.half-hide:not(.hover) {
+    --uno: "!opacity-60 !translate-y-50%";
   }
 
   .divider {
@@ -399,7 +486,6 @@ const dockTransformStyle = computed((): { transform: string, transformOrigin: st
   }
 
   .back-to-top-or-refresh-btn {
-    --uno: "absolute lg:bottom--45px bottom--35px";
     --uno: "transform active:important-scale-90 hover:scale-110";
     --uno: "lg:w-45px w-35px lg:h-45px h-35px";
     --uno: "grid place-items-center";
@@ -433,10 +519,10 @@ const dockTransformStyle = computed((): { transform: string, transformOrigin: st
 }
 
 .dock-item {
-  --shadow-dark: 0 4px 30px 4px var(--bew-theme-color-60);
-  --shadow-active: 0 4px 30px var(--bew-theme-color-70);
-  --shadow-dark-active: 0 4px 20px var(--bew-theme-color-80);
-  --shadow-active-active: 0 4px 20px var(--bew-theme-color-90);
+  --shadow-dark: 0 4px 30px 4px rgba(255, 255, 255, 0.6);
+  --shadow-active: 0 4px 30px var(--bew-theme-color-60);
+  --shadow-dark-active: 0 4px 20px rgba(255, 255, 255, 0.8);
+  --shadow-active-active: 0 4px 20px var(--bew-theme-color-80);
 
   --uno: "relative transform active:important-scale-90 hover:scale-110";
   --uno: "lg:w-45px w-35px";
@@ -468,7 +554,7 @@ const dockTransformStyle = computed((): { transform: string, transformOrigin: st
   }
 
   &.active {
-    --uno: "important-bg-$bew-theme-color-80 text-white";
+    --uno: "important-bg-$bew-theme-color text-white !dark:bg-white !dark:text-black";
     --uno: "shadow-$shadow-active dark:shadow-$shadow-dark";
     --uno: "active:shadow-$shadow-active-active dark-active:shadow-$shadow-dark-active";
   }

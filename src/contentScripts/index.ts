@@ -9,7 +9,7 @@ import { settings } from '~/logic'
 import { setupApp } from '~/logic/common-setup'
 import RESET_BEWLY_CSS from '~/styles/reset.css?raw'
 import { runWhenIdle } from '~/utils/lazyLoad'
-import { compareVersions, injectCSS, isHomePage, isInIframe } from '~/utils/main'
+import { compareVersions, injectCSS, isHomePage, isInIframe, isNotificationPage, isVideoOrBangumiPage } from '~/utils/main'
 import { SVG_ICONS } from '~/utils/svgIcons'
 
 import { version } from '../../package.json'
@@ -36,23 +36,17 @@ function isSupportedPages(): boolean {
   if (
     // homepage
     isHomePage()
-
-    // video page
-    || /https?:\/\/(?:www\.)?bilibili\.com\/(?:video|list)\/.*/.test(currentUrl)
-    // anime playback & movie page
-    || /https?:\/\/(?:www\.)?bilibili\.com\/bangumi\/play\/.*/.test(currentUrl)
-    // watch later playlist
-    || /https?:\/\/(?:www\.)?bilibili\.com\/list\/watchlater.*/.test(currentUrl)
-    // favorite playlist
-    || /https?:\/\/(?:www\.)?bilibili\.com\/list\/ml.*/.test(currentUrl)
+    // video or bangumi page
+    || isVideoOrBangumiPage()
+    // popular page https://www.bilibili.com/v/popular/all
+    || /https?:\/\/(?:www\.)?bilibili\.com\/v\/popular\/all.*/.test(currentUrl)
     // search page
     || /https?:\/\/search\.bilibili\.com\.*/.test(currentUrl)
-    // moments
-    || (
-      /https?:\/\/t\.bilibili\.com\.*/.test(currentUrl)
-      // https://github.com/BewlyBewly/BewlyBewly/issues/1256
-      && !/https?:\/\/t\.bilibili\.com\/vote.*/.test(currentUrl)
-    )
+    // moments page
+    // https://github.com/BewlyBewly/BewlyBewly/issues/1246
+    // https://github.com/BewlyBewly/BewlyBewly/issues/1256
+    // https://github.com/BewlyBewly/BewlyBewly/issues/1266
+    || /https?:\/\/t\.bilibili\.com(?!\/vote|\/share).*/.test(currentUrl)
     // moment detail
     || /https?:\/\/(?:www\.)?bilibili\.com\/opus\/.*/.test(currentUrl)
     // history page
@@ -60,6 +54,7 @@ function isSupportedPages(): boolean {
     || /https?:\/\/(?:www\.)?bilibili\.com\/account\/history.*/.test(currentUrl)
     // watcher later page
     || /https?:\/\/(?:www\.)?bilibili\.com\/watchlater\/#\/list.*/.test(currentUrl)
+    || /https?:\/\/(?:www\.)?bilibili\.com\/watchlater\/list.*/.test(currentUrl)
     // user space page
     || /https?:\/\/space\.bilibili\.com\.*/.test(currentUrl)
     // notifications page
@@ -71,14 +66,15 @@ function isSupportedPages(): boolean {
     // channel page e.g. tv shows, movie, variety shows, mooc page
     || /https?:\/\/(?:www\.)?bilibili\.com\/(?:tv|movie|variety|mooc|documentary).*/.test(currentUrl)
     // article page
-    // www.bilibili.com/read/pcpreview 是专栏浏览页, 因布局问题不做适配 #846
-    || /https?:\/\/(?:www\.)?bilibili\.com\/read\/(?!pcpreview).*/.test(currentUrl)
+    || /https?:\/\/(?:www\.)?bilibili\.com\/read\/.*/.test(currentUrl)
     // 404 page
     || /^https?:\/\/(?:www\.)?bilibili\.com\/404.*$/.test(currentUrl)
     // creative center page 創作中心頁
     || /^https?:\/\/member\.bilibili\.com\/platform.*$/.test(currentUrl)
     // account settings page 帳號設定頁
     || /^https?:\/\/account\.bilibili\.com\/.*$/.test(currentUrl)
+    // music center page 新歌熱榜 https://music.bilibili.com/pc/music-center/
+    || /https?:\/\/music\.bilibili\.com\/pc\/music-center.*$/.test(currentUrl)
     // blackboard page 社区页面
     || /^https?:\/\/(?:www\.)?bilibili\.com\/blackboard.*$/.test(currentUrl)
     // login page 登录页
@@ -99,28 +95,21 @@ export function isSupportedIframePages(): boolean {
     && (
       // supports Bilibili page URLs recorded in the dock
       isHomePage()
+      // Since `Open in drawer` will open the video page within an iframe, so we need to support the following pages
+      || isVideoOrBangumiPage()
       || /https?:\/\/search\.bilibili\.com\/all.*/.test(currentUrl)
       || /https?:\/\/www\.bilibili\.com\/anime.*/.test(currentUrl)
       || /https?:\/\/space\.bilibili\.com\/\d+\/favlist.*/.test(currentUrl)
       || /https?:\/\/www\.bilibili\.com\/history.*/.test(currentUrl)
       || /https?:\/\/www\.bilibili\.com\/watchlater\/#\/list.*/.test(currentUrl)
-      || (
-        /https?:\/\/t\.bilibili\.com.*/.test(currentUrl)
-        // https://github.com/BewlyBewly/BewlyBewly/issues/1246
-        && !/https?:\/\/t\.bilibili\.com\/share\/card\/index.*/.test(currentUrl)
-        // https://github.com/BewlyBewly/BewlyBewly/issues/1256
-        && !/https?:\/\/t\.bilibili\.com\/h5\/dynamic\/vote.*/.test(currentUrl)
-      )
-
-      // Since `Open in drawer` will open the video page within an iframe, so we need to support the following pages
-      // video page
-      || /https?:\/\/(?:www\.)?bilibili\.com\/(?:video|list)\/.*/.test(currentUrl)
-      // anime playback & movie page
-      || /https?:\/\/(?:www\.)?bilibili\.com\/bangumi\/play\/.*/.test(currentUrl)
-      // watch later playlist
-      || /https?:\/\/(?:www\.)?bilibili\.com\/list\/watchlater.*/.test(currentUrl)
-      // favorite playlist
-      || /https?:\/\/(?:www\.)?bilibili\.com\/list\/ml.*/.test(currentUrl)
+      || /https?:\/\/www\.bilibili\.com\/watchlater\/list.*/.test(currentUrl)
+      // moments page
+      // https://github.com/BewlyBewly/BewlyBewly/issues/1246
+      // https://github.com/BewlyBewly/BewlyBewly/issues/1256
+      // https://github.com/BewlyBewly/BewlyBewly/issues/1266
+      || /https?:\/\/t\.bilibili\.com(?!\/vote|\/share).*/.test(currentUrl)
+      // notifications page, for `Open the notifications page as a drawer`
+      || isNotificationPage()
     )
   ) {
     return true
@@ -136,10 +125,20 @@ if (isSupportedPages() || isSupportedIframePages()) {
   if (settings.value.adaptToOtherPageStyles)
     useDark()
 
-  if (settings.value.adaptToOtherPageStyles)
+  if (settings.value.adaptToOtherPageStyles) {
     document.documentElement.classList.add('bewly-design')
-  else
+
+    // Remove the Bilibili Evolved's dark mode style
+    runWhenIdle(async () => {
+      const darkModeStyle = document.head.querySelector('#dark-mode')
+      if (darkModeStyle)
+        document.head.removeChild(darkModeStyle)
+    })
+  }
+
+  else {
     document.documentElement.classList.remove('bewly-design')
+  }
 }
 
 if (settings.value.adaptToOtherPageStyles && isHomePage()) {
@@ -169,9 +168,7 @@ window.addEventListener(BEWLY_MOUNTED, () => {
 
 // Set the original Bilibili top bar to `display: none` to prevent it from showing before the load
 // see: https://github.com/BewlyBewly/BewlyBewly/issues/967
-let removeOriginalTopBar: HTMLStyleElement | null = null
-if (!settings.value.useOriginalBilibiliTopBar && isSupportedPages())
-  removeOriginalTopBar = injectCSS(`.bili-header { visibility: hidden !important; }`)
+const removeOriginalTopBar = injectCSS(`.bili-header, #biliMainHeader { visibility: hidden !important; }`)
 
 async function onDOMLoaded() {
   let originalTopBar: HTMLElement | null = null
@@ -190,6 +187,13 @@ async function onDOMLoaded() {
 
     // Remove the original Bilibili homepage if in Bilibili homepage & useOriginalBilibiliHomepage is enabled
     document.body.innerHTML = ''
+
+    // Remove the Bilibili Evolved homepage & Bilibili-Gate homepage
+    injectCSS(`
+      .home-redesign-base, .bilibili-gate-root {
+        display: none !important;
+      }
+    `)
 
     if (originalTopBarInnerUselessContents)
       originalTopBarInnerUselessContents.forEach(item => (item as HTMLElement).style.display = 'none')

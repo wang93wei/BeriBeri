@@ -8,6 +8,7 @@ import { useBewlyApp } from '~/composables/useAppProvider'
 import { accessKey, settings } from '~/logic'
 import type { VideoInfo } from '~/models/video/videoInfo'
 import type { VideoPreviewResult } from '~/models/video/videoPreview'
+import { useMainStore } from '~/stores/mainStore'
 import api from '~/utils/api'
 import { getTvSign, TVAppKey } from '~/utils/authProvider'
 import { calcCurrentTime, calcTimeSince, numFormatter } from '~/utils/dataFormatter'
@@ -40,6 +41,8 @@ interface Props {
 
 const toast = useToast()
 const { mainAppRef, openIframeDrawer } = useBewlyApp()
+const { setActivatedCover } = useMainStore()
+
 const showVideoOptions = ref<boolean>(false)
 const videoOptionsFloatingStyles = ref<CSSProperties>({})
 // Whether the user has marked it as disliked
@@ -136,6 +139,8 @@ function toggleWatchLater() {
 }
 
 function handleMouseEnter() {
+  props.video && setActivatedCover(`${removeHttpFromUrl(props.video.cover)}@672w_378h_1c_!web-home-common-cover`)
+
   // fix #789
   contentVisibility.value = 'visible'
   if (settings.value.hoverVideoCardDelayed) {
@@ -169,12 +174,23 @@ function handleClick(event: MouseEvent) {
 }
 
 function handleMoreBtnClick(event: MouseEvent) {
+  // the distance between the bottom and the height of the more button
+  if (!moreBtnRef.value)
+    return
+  const { bottom, height } = moreBtnRef.value.getBoundingClientRect()
+
+  /**
+   * if (screen height - bottom > 406px) then context-menu offset upwards
+   * Why 406? Because the current context-menu is not a responsive layout, it can be temporarily referred to as 406
+   */
+  const offsetTop = window.innerHeight - bottom > 406 ? 0 : -406 - height
+
   showVideoOptions.value = false
   videoOptionsFloatingStyles.value = {
     position: 'absolute',
     top: 0,
     left: 0,
-    transform: `translate(${event.x}px, ${event.y}px)`,
+    transform: `translate(${event.x}px, ${event.y + offsetTop}px)`,
   }
   showVideoOptions.value = true
 }
@@ -240,7 +256,7 @@ provide('getVideoType', () => props.type!)
           :style="{ display: horizontal ? 'flex' : 'block', gap: horizontal ? '1.5rem' : '0' }"
           :href="videoUrl"
           type="videoCard"
-          custom-click-event
+          :custom-click-event="settings.videoCardLinkOpenMode === 'drawer'"
           @mouseenter="handleMouseEnter"
           @mouseleave="handelMouseLeave"
           @click="handleClick"
@@ -354,7 +370,7 @@ provide('getVideoType', () => props.type!)
               <div
                 v-if="video.liveStatus === 1"
                 class="group-hover:opacity-0"
-                pos="absolute left-0 top-0" bg="$bew-theme-color" text="xs white"
+                pos="absolute left-0 top-0" bg="$bew-theme-color" text="xs white" fw-bold
                 p="x-2 y-1" m-1 inline-block rounded="$bew-radius" duration-300
               >
                 LIVE

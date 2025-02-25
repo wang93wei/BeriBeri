@@ -15,6 +15,11 @@
   .header .header-upinfo-bg-shadow .top {
     opacity: 0.6;
   }
+
+  .nav-bar {
+    background-color: var(--bew-elevated);
+    backdrop-filter: var(--bew-filter-glass-1);
+  }
   // #endregion
 
   // #region old user space page
@@ -319,6 +324,16 @@
       background: var(--bew-theme-color) url(//s1.hdslb.com/bfs/static/jinkela/note-list/assets/ic_check.svg) no-repeat
         50% / 9px;
     }
+
+    // 處理性別圖標背景顔色
+
+    .upinfo .gender:has(.sic-BDC-male_line) {
+      background-color: var(--bew-bili-blue) !important;
+    }
+
+    .upinfo .gender:has(.sic-BDC-female_line) {
+      background-color: var(--bew-bili-pink) !important;
+    }
   }
 
   // #endregion
@@ -326,9 +341,10 @@
   // #region dark mode adaption part
   // 深色模式下對主題顏色調整
   &.dark {
-    .bili-dyn-item {
+    .bili-dyn-item,
+    .bili-dyn-item * {
       --bg1: var(--bew-content-solid);
-      --bg2: var(--bew-bg);
+      --bg2: var(--bew-fill-1);
     }
 
     .n .n-inner,

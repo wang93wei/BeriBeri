@@ -1,6 +1,6 @@
 # 貢獻指南
 
-[English](CONTRIBUTING.md) | [官话 - 简体中文](CONTRIBUTING-cmn_CN.md) | [官話 - 正體中文](CONTRIBUTING-cmn_TW.md) | [廣東話](CONTRIBUTING-jyut.md)
+[English](CONTRIBUTING.md) | [官话 - 简体中文](CONTRIBUTING-cmn_CN.md) | [官話 - 繁体中文](CONTRIBUTING-cmn_TW.md) | [廣東話](CONTRIBUTING-jyut.md)
 
 ## 💻 設定開發環境
 
@@ -113,7 +113,7 @@ pnpm start:firefox
 pnpm install
 
 # 運行專案
-pnpm dev
+pnpm dev-firefox
 ```
 
 2. 喺瀏覽器度輸入 `about:addons`，撳 `Extensions` 然之後 `Debug Add-ons`

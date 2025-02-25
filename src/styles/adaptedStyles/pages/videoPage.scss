@@ -1,42 +1,31 @@
 .bewly-design.videoPage {
-  .user-card-m-exp .layout,
   .up-detail .up-detail-top .up-name.is_vip:hover .mask,
-  .up-detail .up-detail-top .up-name.small-vip:hover .mask {
+  .up-detail .up-detail-top .up-name.small-vip:hover .mask,
+  .up-detail .up-detail-top .up-name.vip:hover .mask {
     display: none;
   }
 
-  .user-card-m-exp .user-info-wrapper {
-    background-color: var(--bew-bg);
-    border-radius: 0 0 8px 8px;
+  // ai 小助手
+  [class^="_VideoAssistant"] {
+    --app_bg: #f1f6fc;
+    --app_graph_bg: #e6ecf4;
   }
 
-  .collection-m-exp {
-    position: relative;
+  [class^="_VideoAssistant"] * {
+    --brand_blue: var(--bew-bili-blue);
   }
 
-  .qrcode .van-qrcode {
-    padding: 5px;
-  }
-
-  .qrcode .van-qrcode canvas {
-    width: 90px;
-    height: 90px;
+  &.dark [class^="_VideoAssistant"] {
+    --app_bg: var(--bew-elevated-alt-solid);
+    --app_graph_bg: var(--bew-fill-1);
   }
 
   // #region theme color adaption part
   // Increase the priority of the style inside by writing a non-existent selector in `:not()`
   :not(foobar) {
-    ._VideoAssistant_196qs_1._Light_196qs_12,
-    ._VideoAssistant_196qs_1._Dark_196qs_16 {
-      --app_bg: var(--bew-elevated-alt-solid);
-      --app_graph_bg: var(--bew-fill-1);
-    }
-
     .content .group-list li input[type="checkbox"] + i {
-      border-width: 1px;
       border-radius: 5px;
-      border-color: #bec3cc;
-      border-style: solid;
+      border: 1px solid var(--bew-border-color);
     }
 
     .coin-operated-m-exp .like-checkbox input[type="checkbox"]:checked + i {
@@ -144,7 +133,8 @@
     .up-name.is_vip,
     .up-name.small-vip,
     .up-detail .up-detail-top .up-name[style*="color: rgb(251, 114, 153)"],
-    .up-detail .up-detail-top .up-name[style*="color:#FB7299;"] {
+    .up-detail .up-detail-top .up-name[style*="color:#FB7299;"],
+    .user-card-m-exp .user-info-wrapper .info .user .name[style*="color: rgb(251, 114, 153)"] {
       color: var(--bew-theme-color) !important;
     }
 
@@ -281,6 +271,10 @@
       #check-timestamp:checked {
       overflow: hidden;
     }
+
+    ._VideoAssistant_196qs_1 ._Header_196qs_20 ._Header__Left_196qs_28 ._StatusBar_196qs_34 ._StatusText_196qs_43 {
+      background-image: linear-gradient(90.24deg, var(--bew-theme-color) 0.4%, var(--bew-theme-color) 101.46%);
+    }
   }
 
   // #endregion
@@ -307,7 +301,8 @@
     .ql-toolbar,
     ._Tabs_krx6h_1 ._TabItem_krx6h_8._Active_krx6h_36,
     ._SeekSections_1iu0q_1 ._Item_1iu0q_1,
-    ._Fallback_1t0d5_1 ._Main_1t0d5_10 ._Item_1t0d5_15 {
+    ._Fallback_1t0d5_1 ._Main_1t0d5_10 ._Item_1t0d5_15,
+    .video-argue .video-argue-inner.general {
       background-color: var(--bew-fill-1);
     }
 
@@ -332,21 +327,17 @@
     }
 
     .note-pc .note-container,
-    .note-detail {
+    .note-detail,
+    .note-detail .note-operation .sanlian-box,
+    .ql-snow .ql-picker-options,
+    .ai-summary-tips-panel .tips-panel,
+    ._TipsPopover_1lury_1 ._Panel_1lury_10 ._PanelContent_1lury_19,
+    .ai-summary-popup-body-outline .section:hover {
       background-color: var(--bew-elevated-solid);
     }
 
     .note-pc .note-container .note-header {
       background-color: var(--bew-elevated-solid) !important;
-    }
-
-    .note-detail .note-operation .sanlian-box,
-    .ql-snow .ql-picker-options {
-      background-color: var(--bew-elevated-solid);
-    }
-
-    .ai-summary-tips-panel .tips-panel {
-      background-color: var(--bew-bg);
     }
 
     .app .navbar {
@@ -355,10 +346,6 @@
 
     .resizable-component .editor-innter {
       background-color: unset;
-    }
-
-    .ai-summary-popup-body-outline .section:hover {
-      background-color: #83839124;
     }
 
     .note-pc .note-container .note-header *,
@@ -372,7 +359,9 @@
     .ql-editor .ql-color-\#000000,
     .ql-editor,
     .up-detail .up-detail-top .up-name,
-    .ai-summary-tips-panel .tips-panel-title {
+    .ai-summary-tips-panel .tips-panel-title,
+    ._TipsPopover_1lury_1 ._Panel_1lury_10 ._PanelContent_1lury_19,
+    ._TipsPopover_1lury_1 ._Panel_1lury_10 ._PanelContent_1lury_19 ._Title_1lury_32 {
       color: var(--bew-text-1);
     }
 
@@ -388,7 +377,8 @@
       color: var(--bew-text-2);
     }
 
-    .note-list .note-card-container .note-card .note-info {
+    .note-list .note-card-container .note-card .note-info,
+    .video-argue .video-argue-inner.general {
       color: var(--bew-text-3);
     }
 
@@ -414,14 +404,8 @@
       border-color: var(--bew-border-color);
     }
 
-    // 标题下方警告
-    .video-argue .video-argue-inner.strong {
-      background-color: #2e1617; // 安卓客户端屏幕取色结果
-    }
-
-    // 稿件举报窗
-    .app .navbar {
-      background-color: var(--bew-bg) !important;
+    .qrcode .van-qrcode {
+      box-shadow: 0 0 0 5px white;
     }
   }
   //  #endregion

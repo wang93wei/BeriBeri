@@ -109,9 +109,13 @@ settings:
   select_language_opt:
     english: 英文
     mandarin_cn: 官话 - 简体中文
-    mandarin_tw: 官話 - 正體中文
+    mandarin_tw: 官話 - 繁体中文
     jyut: 廣東話
   customize_font: 自定义字体
+  customize_font_opt:
+    default: Bilibili 默认
+    recommend: 推荐
+    custom: 自定义
   customize_font_desc: |-
     对于喜欢旧字形的用户，我们推荐 <a class="link" href="https://github.com/GuiWonder/Shanggu" target="_blank">Shanggu Fonts (尚古字型)</a> 和 <a class="link" href="https://github.com/ayaka14732/FanWunHak" target="_blank">Fan Wun Hak (繁媛黑體)</a>。
     这些字形还具有将简体中文转换为繁体/正体中文的能力。
@@ -125,6 +129,7 @@ settings:
 
   disable_frosted_glass: 禁用毛玻璃效果
   reduce_frosted_glass_blur: 降低毛玻璃模糊强度
+  disable_shadow: 禁用阴影
 
   link_opening_behavior_opt:
     current_tab: 当前标签页
@@ -149,15 +154,20 @@ settings:
   # Desktop & Dock
   use_old_top_bar: 使用旧版顶栏
   auto_hide_top_bar: 自动隐藏顶栏
+  show_top_bar_theme_color_gradient: 在顶栏显示主题色渐变（仅在暗色模式下有效）
+  show_bewly_or_bili_top_bar_switcher: 显示 BewlyBewly/Bilibili 顶栏切换器
   show_bewly_or_bili_page_switcher: 显示 BewlyBewly/Bilibili 页面切换器
   top_bar_icon_badges: 图标角标
   top_bar_icon_badges_opt:
     number: 数字
     dot: 圆点
     none: 不显示
+  open_notifications_page_as_drawer: 将通知页面作为抽屉打开
+
   always_use_dock: 总是使用 Dock 栏
   always_use_dock_desc: 启用后，Dock 栏将始终显示，侧边栏将隐藏。我们推荐你同时启用自动隐藏 Dock 栏。
   auto_hide_dock: 自动隐藏 Dock 栏
+  half_hide_dock: 半隐藏 Dock 栏
   dock_position: Dock 栏位置
   dock_position_desc: 在屏幕中摆放位置。
   dock_content_adjustment: Dock 内容调整
@@ -166,7 +176,7 @@ settings:
   dock_item_use_original_bili_web_page: 使用原版 Bilibili 网页
   disable_dock_glowing_effect: 关闭 Dock 栏发光效果
   disable_light_dark_mode_switcher: 禁用亮/暗色模式切换按钮
-  move_back_to_top_and_refresh_to_dock: 将返回顶部和刷新按钮移动到 Dock 栏
+  back_to_top_and_refresh_buttons_are_separated: 分离回到顶部和刷新按钮
   sidebar_position: 侧边栏位置
   auto_hide_sidebar: 自动隐藏侧边栏
 
@@ -281,12 +291,22 @@ settings:
   reset_settings_confirm: |-
     重置设置？
     该操作无法撤销。你确定要重置你的设置吗？
+
+  safari_helpers: 帮助过上架 Safari 商店的人
+  safari_helpers_desc1: 提交 PR 支援 Safari
+  safari_helpers_desc2: 帮忙免费上架 Safari
+  safari_helpers_desc3: 帮解答注册苹果开发者问题
+  safari_helpers_desc4: 帮解答注册苹果开发者问题
+
   contributors: 贡献者
 
 auth:
   auth_access_key_first: 在这之前请先授权 BewlyBewly 使用 access key
 
 topbar:
+  switch_to_bewly_top_bar: 切换到 BewlyBewly 顶栏
+  switch_to_bili_top_bar: 切换到 Bilibili/Bilibili-Evolved 顶栏
+
   sign_in: 登录
   notifications: 通知
   moments: 动态

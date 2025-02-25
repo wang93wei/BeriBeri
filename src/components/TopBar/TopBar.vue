@@ -3,6 +3,7 @@ import { onClickOutside, onKeyStroke, useMouseInElement } from '@vueuse/core'
 import type { Ref, UnwrapNestedRefs } from 'vue'
 
 import { useBewlyApp } from '~/composables/useAppProvider'
+import { useDark } from '~/composables/useDark'
 import { useDelayedHover } from '~/composables/useDelayedHover'
 import { OVERLAY_SCROLL_BAR_SCROLL, TOP_BAR_VISIBILITY_CHANGE } from '~/constants/globalEvents'
 import { AppPage } from '~/enums/appEnums'
@@ -10,6 +11,7 @@ import { settings } from '~/logic'
 import api from '~/utils/api'
 import { getUserID, isHomePage, isInIframe } from '~/utils/main'
 import emitter from '~/utils/mitt'
+import { createTransformer } from '~/utils/transformer'
 
 import BewlyOrBiliPageSwitcher from './components/BewlyOrBiliPageSwitcher.vue'
 import ChannelsPop from './components/ChannelsPop.vue'
@@ -17,6 +19,7 @@ import FavoritesPop from './components/FavoritesPop.vue'
 import HistoryPop from './components/HistoryPop.vue'
 import MomentsPop from './components/MomentsPop.vue'
 import MorePop from './components/MorePop.vue'
+import NotificationsDrawer from './components/NotificationsDrawer.vue'
 import NotificationsPop from './components/NotificationsPop.vue'
 import UploadPop from './components/UploadPop.vue'
 import UserPanelPop from './components/UserPanelPop.vue'
@@ -35,6 +38,7 @@ import type { UnReadDm, UnReadMessage, UserInfo } from './types'
 // })
 
 const { activatedPage, scrollbarRef, reachTop } = useBewlyApp()
+const { isDark } = useDark()
 
 const mid = getUserID() || ''
 const userInfo = reactive<UserInfo | NonNullable<unknown>>({}) as UnwrapNestedRefs<UserInfo>
@@ -50,11 +54,13 @@ const isLogin = ref<boolean>(true)
 const logo = ref<HTMLElement>() as Ref<HTMLElement>
 const avatarImg = ref<HTMLImageElement>() as Ref<HTMLImageElement>
 const avatarShadow = ref<HTMLImageElement>() as Ref<HTMLImageElement>
-const favoritesPopRef = ref<any>()
-const momentsPopRef = ref()
 
 const scrollTop = ref<number>(0)
 const oldScrollTop = ref<number>(0)
+
+const drawerVisible = reactive({
+  notifications: false,
+})
 
 const isSearchPage = computed((): boolean => {
   if (/https?:\/\/search.bilibili.com\/.*$/.test(location.href))
@@ -74,8 +80,6 @@ const forceWhiteIcon = computed((): boolean => {
       /https?:\/\/(?:www.)?bilibili.com\/(?:v|anime|guochuang|tv|movie|variety|mooc).*/.test(location.href)
       && !/https?:\/\/(?:www.)?bilibili.com\/video.*/.test(location.href)
     )
-    // watch later & history page
-    || /https?:\/\/(?:www.)?bilibili.com\/(?:watchlater|account\/history).*/.test(location.href)
     // user space page 空間頁
     || /https?:\/\/space.bilibili\.com\.*/.test(location.href)
     // premium page bilibili 大會員頁
@@ -135,8 +139,6 @@ const isTopBarFixed = computed((): boolean => {
     || /https?:\/\/(?:www.)?bilibili.com\/bangumi\/play\/.*/.test(location.href)
     // moment page
     || /https?:\/\/t.bilibili.com.*/.test(location.href)
-    // watch later page
-    || /https?:\/\/(?:www\.)?bilibili\.com\/watchlater\/#\/list.*/.test(location.href)
     // channel, anime, chinese anime, tv shows, movie, variety shows, mooc
     || /https?:\/\/(?:www.)?bilibili.com\/(?:v|anime|guochuang|tv|movie|variety|mooc).*/.test(location.href)
     // articles page
@@ -193,7 +195,7 @@ const upload = setupTopBarItemHoverEvent('upload')
 // More
 const more = setupTopBarItemHoverEvent('more')
 
-const topBarItemElements = {
+const topBarItemElements: Record<keyof typeof popupVisible, Ref<HTMLElement | undefined>> = {
   channels,
   userPanel: avatar,
   notifications,
@@ -202,10 +204,35 @@ const topBarItemElements = {
   history,
   watchLater,
   upload,
+  more,
+}
+
+const channelsTransformer = setupTopBarItemTransformer('channels')
+const avatarTransformer = setupTopBarItemTransformer('userPanel')
+const notificationsTransformer = setupTopBarItemTransformer('notifications')
+const momentsTransformer = setupTopBarItemTransformer('moments')
+const favoritesTransformer = setupTopBarItemTransformer('favorites')
+const historyTransformer = setupTopBarItemTransformer('history')
+const watchLaterTransformer = setupTopBarItemTransformer('watchLater')
+const uploadTransformer = setupTopBarItemTransformer('upload')
+const moreTransformer = setupTopBarItemTransformer('more')
+
+function setupTopBarItemTransformer(key: keyof typeof popupVisible) {
+  const transformer = createTransformer(topBarItemElements[key], {
+    x: '0px',
+    y: '50px',
+    centerTarget: {
+      x: true,
+    },
+  })
+
+  return transformer
 }
 
 function setupTopBarItemHoverEvent(key: keyof typeof popupVisible) {
   return useDelayedHover({
+    enterDelay: 320,
+    leaveDelay: 320,
     beforeEnter: () => closeAllTopBarPopup(key),
     enter: () => {
       popupVisible[key] = true
@@ -275,8 +302,9 @@ watch(() => popupVisible.favorites, (newVal, oldVal) => {
     return
   if (newVal) {
     nextTick(() => {
-      if (favoritesPopRef.value)
-        favoritesPopRef.value.refreshFavoriteResources()
+      if (favoritesTransformer.value)
+      // @ts-expect-error allow
+        favoritesTransformer.value.refreshFavoriteResources()
     })
   }
 })
@@ -398,6 +426,14 @@ async function getUnreadMessageCount() {
     unReadMessageCount.value = result
   }
 }
+
+const notificationsDrawerUrl = ref<string>('https://message.bilibili.com/')
+function handleNotificationsItemClick(item: { name: string, url: string, unreadCount: number, icon: string }) {
+  if (settings.value.openNotificationsPageAsDrawer) {
+    drawerVisible.notifications = true
+    notificationsDrawerUrl.value = item.url
+  }
+}
 // #endregion
 
 // #region Moments
@@ -464,7 +500,6 @@ defineExpose({
           pointer-events-none transform-gpu
         />
 
-        <!-- <Transition name="fade"> -->
         <div
           pos="absolute top-0 left-0" w-full
           pointer-events-none opacity-100 duration-300
@@ -478,9 +513,17 @@ defineExpose({
             height: reachTop ? 'var(--bew-top-bar-height)' : 'calc(var(--bew-top-bar-height) + 20px)',
           }"
         />
-        <!-- </Transition> -->
 
-        <div shrink-0 flex="inline xl:1 justify-start items-center gap-2">
+        <!-- Top bar theme color gradient -->
+        <Transition name="fade">
+          <div
+            v-if="settings.showTopBarThemeColorGradient && !forceWhiteIcon && reachTop && isDark"
+            pos="absolute top-0 left-0" w-full h="$bew-top-bar-height" pointer-events-none
+            :style="{ background: 'linear-gradient(to bottom, var(--bew-theme-color-10), transparent)' }"
+          />
+        </Transition>
+
+        <div shrink-0 flex="inline xl:1 justify-start items-center gap-2" pos="relative" z-1>
           <div
             ref="channels"
             z-1 relative w-fit
@@ -514,9 +557,10 @@ defineExpose({
 
             <Transition name="slide-in">
               <ChannelsPop
-                v-show="popupVisible.channels"
+                v-if="popupVisible.channels"
+                ref="channelsTransformer"
                 class="bew-popover"
-                pos="!left-0 !top-70px"
+                pos="!left-0"
                 transform="!translate-x-0"
               />
             </Transition>
@@ -532,7 +576,7 @@ defineExpose({
               v-if="showSearchBar"
               class="search-bar"
               :style="{
-                '--b-search-bar-normal-color': settings.disableFrostedGlass ? 'var(--bew-elevated)' : 'color-mix(in oklab, var(--bew-elevated-solid), transparent 80%)',
+                '--b-search-bar-normal-color': settings.disableFrostedGlass ? 'var(--bew-elevated)' : 'color-mix(in oklab, var(--bew-elevated-solid), transparent 60%)',
                 '--b-search-bar-hover-color': 'var(--bew-elevated-hover)',
                 '--b-search-bar-focus-color': 'var(--bew-elevated)',
                 '--b-search-bar-normal-icon-color': forceWhiteIcon && !settings.disableFrostedGlass ? 'white' : 'var(--bew-text-1)',
@@ -613,7 +657,7 @@ defineExpose({
                   <Transition name="slide-in">
                     <MomentsPop
                       v-show="popupVisible.moments"
-                      ref="momentsPopRef"
+                      ref="momentsTransformer"
                       class="bew-popover"
                       @click.stop="() => {}"
                     />
@@ -640,7 +684,7 @@ defineExpose({
                     <KeepAlive>
                       <FavoritesPop
                         v-if="popupVisible.favorites"
-                        ref="favoritesPopRef"
+                        ref="favoritesTransformer"
                         class="bew-popover"
                         @click.stop="() => {}"
                       />
@@ -667,6 +711,7 @@ defineExpose({
                   <Transition name="slide-in">
                     <HistoryPop
                       v-if="popupVisible.history"
+                      ref="historyTransformer"
                       class="bew-popover"
                       @click.stop="() => {}"
                     />
@@ -682,7 +727,7 @@ defineExpose({
                 >
                   <ALink
                     :class="{ 'white-icon': forceWhiteIcon }"
-                    href="https://www.bilibili.com/watchlater/#/list"
+                    href="https://www.bilibili.com/watchlater/list"
                     :title="$t('topbar.watch_later')"
                     type="topBar"
                   >
@@ -692,6 +737,7 @@ defineExpose({
                   <Transition name="slide-in">
                     <WatchLaterPop
                       v-if="popupVisible.watchLater"
+                      ref="watchLaterTransformer"
                       class="bew-popover"
                       @click.stop="() => {}"
                     />
@@ -728,6 +774,7 @@ defineExpose({
                 <Transition name="slide-in">
                   <MorePop
                     v-show="popupVisible.more"
+                    ref="moreTransformer"
                     class="bew-popover"
                     @click.stop="() => {}"
                   />
@@ -763,6 +810,7 @@ defineExpose({
                   <Transition name="slide-in">
                     <UploadPop
                       v-if="popupVisible.upload"
+                      ref="uploadTransformer"
                       class="bew-popover"
                       @click.stop="() => {}"
                     />
@@ -788,11 +836,14 @@ defineExpose({
                       class="unread-dot"
                     />
                   </template>
+
                   <ALink
+                    :href="settings.openNotificationsPageAsDrawer ? undefined : 'https://message.bilibili.com'"
                     :class="{ 'white-icon': forceWhiteIcon }"
-                    href="https://message.bilibili.com"
                     :title="$t('topbar.notifications')"
                     type="topBar"
+                    :custom-click-event="settings.openNotificationsPageAsDrawer"
+                    @click="drawerVisible.notifications = true"
                   >
                     <div i-tabler:bell />
                   </ALink>
@@ -800,8 +851,10 @@ defineExpose({
                   <Transition name="slide-in">
                     <NotificationsPop
                       v-if="popupVisible.notifications"
+                      ref="notificationsTransformer"
                       class="bew-popover"
                       @click.stop="() => {}"
+                      @item-click="handleNotificationsItemClick"
                     />
                   </Transition>
                 </div>
@@ -853,9 +906,10 @@ defineExpose({
               <Transition name="slide-in">
                 <UserPanelPop
                   v-if="popupVisible.userPanel"
-                  class="bew-popover"
+                  ref="avatarTransformer"
                   :user-info="userInfo"
                   after:h="!0"
+                  class="bew-popover"
                   pos="!left-auto !right-0" transform="!translate-x-0"
                   @click.stop="() => {}"
                 />
@@ -864,6 +918,14 @@ defineExpose({
           </div>
         </div>
       </main>
+
+      <KeepAlive v-if="settings.openNotificationsPageAsDrawer">
+        <NotificationsDrawer
+          v-if="drawerVisible.notifications"
+          :url="notificationsDrawerUrl"
+          @close="drawerVisible.notifications = false"
+        />
+      </KeepAlive>
     </header>
   </Transition>
 </template>
@@ -886,12 +948,12 @@ defineExpose({
 
 .slide-in-leave-to,
 .slide-in-enter-from {
-  --uno: "transform important:translate-y-4 opacity-0";
+  --uno: "transform mt--10px opacity-0";
 }
 
 .slide-out-enter-active,
 .slide-out-leave-active {
-  --uno: "transition-all duration-250 pointer-events-none transform-gpu";
+  --uno: "transition-all duration-300 pointer-events-none transform-gpu";
 }
 
 .slide-out-leave-to,
@@ -920,8 +982,7 @@ defineExpose({
 }
 
 .bew-popover {
-  --uno: "absolute top-60px left-1/2";
-  --uno: "transform -translate-x-1/2";
+  --uno: "absolute";
   --uno: "overflow-hidden";
   --uno: "after:content-empty";
   --uno: "after:opacity-100 after:w-full after:h-100px";
@@ -960,7 +1021,7 @@ defineExpose({
       --uno: "shrink-0 duration-300 rounded-1/2 w-34px h-34px bg-cover bg-center";
 
       &.hover {
-        --uno: "transform scale-230 translate-y-60px translate-x--36px";
+        --uno: "transform scale-230 translate-y-50px translate-x--36px";
       }
     }
 
@@ -997,19 +1058,24 @@ defineExpose({
   .right-side-item {
     --uno: "relative text-$bew-text-1 flex items-center";
 
-    &:not(.avatar) a {
+    &:not(.avatar) a,
+    & .notifications {
       --uno: "text-lg grid place-items-center rounded-40px duration-300 relative z-5";
       --uno: "h-34px w-34px";
       filter: drop-shadow(0 0 4px var(--bew-bg));
     }
 
     &.active a,
-    & a:hover {
+    & a:hover,
+    & .notifications:hover,
+    & .notifications:active {
       --uno: "bg-$bew-fill-2";
     }
 
     &.active a.white-icon,
-    & a:hover.white-icon {
+    & a:hover.white-icon,
+    & .notifications:hover.white-icon,
+    & .notifications:active.white-icon {
       --uno: "bg-white bg-opacity-20";
     }
 

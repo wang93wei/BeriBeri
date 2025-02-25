@@ -1,6 +1,6 @@
 # 貢獻指南
 
-[English](CONTRIBUTING.md) | [官话 - 简体中文](CONTRIBUTING-cmn_CN.md) | [官話 - 正體中文](CONTRIBUTING-cmn_TW.md) | [廣東話](CONTRIBUTING-jyut.md)
+[English](CONTRIBUTING.md) | [官话 - 简体中文](CONTRIBUTING-cmn_CN.md) | [官話 - 繁体中文](CONTRIBUTING-cmn_TW.md) | [廣東話](CONTRIBUTING-jyut.md)
 
 ## 💻 設定開發環境
 
@@ -52,7 +52,7 @@ pnpm dev
 
 2. 在地址欄輸入 `chrome://extensions/`（Chrome），`edge://extensions/`（Edge）並按 Enter 鍵
 
-3. 啟用 `開發者模式` 並點擊 `載入解壓縮`
+3. 啓用 `開發者模式` 並點擊 `載入解壓縮`
 
 <img width="655" alt="Snipaste_2022-03-27_18-17-04" src="https://user-images.githubusercontent.com/33394391/160276882-13da0484-92c1-47dd-add8-7655c5c2bf1c.png">
 <br/>
@@ -113,7 +113,7 @@ pnpm start:firefox
 pnpm install
 
 # 運行專案
-pnpm dev
+pnpm dev-firefox
 ```
 
 2. 在瀏覽器中輸入 `about:addons`，點擊 `Extensions` 然後 `Debug Add-ons`

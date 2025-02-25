@@ -52,16 +52,28 @@ export function setupNecessarySettingsWatchers() {
   watch(
     [() => settings.value.customizeFont, () => settings.value.fontFamily],
     () => {
+      if (typeof settings.value.customizeFont === 'boolean')
+        settings.value.customizeFont = 'recommend'
+
       // Set the default font family
-      if (!settings.value.customizeFont && !settings.value.fontFamily) {
-        settings.value.fontFamily = `-apple-system, BlinkMacSystemFont, Inter, "Segoe UI Variable", "Segoe UI", "Roboto Flex", Roboto, "Noto Sans", Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", Arial, sans-serif`
+      if (!settings.value.fontFamily && settings.value.customizeFont !== 'custom') {
+        /* Do not wrap following line */
+        settings.value.fontFamily = `CJKEmDash, Numbers, Onest, ShangguSansSCVF, -apple-system, BlinkMacSystemFont, InterVariable, Inter, "Segoe UI", Cantarell, "Noto Sans", "Roboto Flex", Roboto, sans-serif, ui-sans-serif, system-ui, "Apple Color Emoji", "Twemoji Mozilla", "Noto Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", emoji`
       }
 
-      if (settings.value.customizeFont) {
-        document.documentElement.style.setProperty('--bew-font-family', settings.value.fontFamily)
+      // Remove the custom fonts first
+      document.documentElement.style.removeProperty('--bew-custom-fonts')
+
+      // Under default settings, revert to Bilibili's original font-family
+      if (settings.value.customizeFont === 'default') {
+        document.documentElement.classList.remove('modify-fonts')
+      }
+      else if (settings.value.customizeFont === 'recommend') {
+        document.documentElement.classList.add('modify-fonts')
       }
       else {
-        document.documentElement.style.removeProperty('--bew-font-family')
+        document.documentElement.classList.add('modify-fonts')
+        document.documentElement.style.setProperty('--bew-custom-fonts', settings.value.fontFamily)
       }
     },
     { immediate: true },
@@ -71,24 +83,10 @@ export function setupNecessarySettingsWatchers() {
   watch(
     () => settings.value.overrideDanmakuFont,
     () => {
-      let fallbackFontFamily = ''
-      if (locale.value === LanguageType.Mandarin_CN) {
-        fallbackFontFamily = 'var(--bew-fonts-mandarin-cn)'
-      }
-      else if (locale.value === LanguageType.Mandarin_TW) {
-        fallbackFontFamily = 'var(--bew-fonts-mandarin-tw)'
-      }
-      else if (locale.value === LanguageType.Cantonese) {
-        fallbackFontFamily = 'var(--bew-fonts-cantonese)'
-      }
-      else {
-        fallbackFontFamily = 'var(--bew-fonts-english)'
-      }
-
       if (settings.value.overrideDanmakuFont) {
         danmakuFontStyleEl = injectCSS(`
           .bewly-design .bili-danmaku-x-dm {
-            font-family: var(--bew-font-family, ${fallbackFontFamily}) !important;
+            font-family: var(--bew-fonts) !important;
           }
         `)
       }
@@ -100,16 +98,11 @@ export function setupNecessarySettingsWatchers() {
   )
 
   const removeTheIndentFromChinesePunctuationStyleEl = injectCSS(`
-    .video-info-container .special-text-indent[data-title^='《'],
-    .video-info-container .special-text-indent[data-title^='「'],
-    .video-info-container .special-text-indent[data-title^='『'], 
-    .video-info-container .special-text-indent[data-title^='【'],
-    p[title^='\\300c'],
-    p[title^='\\300e'],
-    p[title^='\\3010'],
-    h3[title^='\\300c'],
-    h3[title^='\\300e'],
-    h3[title^='\\3010'] {
+    .video-info-container .special-text-indent[data-title^='“'],a[title^='“'],p[title^='“'],h3[title^='“'],
+    .video-info-container .special-text-indent[data-title^='《'],a[title^='《'],p[title^='《'],h3[title^='《'],
+    .video-info-container .special-text-indent[data-title^='「'],a[title^='「'],p[title^='「'],h3[title^='「'],
+    .video-info-container .special-text-indent[data-title^='『'],a[title^='『'],p[title^='『'],h3[title^='『'],
+    .video-info-container .special-text-indent[data-title^='【'],a[title^='【'],p[title^='【'],h3[title^='【'] {
       text-indent: 0 !important;
     }
   `)
@@ -167,6 +160,22 @@ export function setupNecessarySettingsWatchers() {
     },
     { immediate: true },
   )
+
+  watch(() => settings.value.disableShadow, (newValue) => {
+    const bewlyElement = document.querySelector('#bewly') as HTMLElement
+    if (newValue) {
+      if (bewlyElement)
+        bewlyElement.classList.add('disable-shadow')
+
+      document.documentElement.classList.add('disable-shadow')
+    }
+    else {
+      if (bewlyElement)
+        bewlyElement.classList.remove('disable-shadow')
+
+      document.documentElement.classList.remove('disable-shadow')
+    }
+  }, { immediate: true })
 
   watch(() => settings.value.blockAds, () => {
     // Do not use the "ads" keyword. AdGuard, AdBlock, and some ad-blocking extensions will
@@ -259,7 +268,7 @@ export function setupNecessarySettingsWatchers() {
     (newVal) => {
       if (newVal)
         settings.value.showTopBar = false
-      document.documentElement.classList.toggle('remove-bili-top-bar', !settings.value.useOriginalBilibiliTopBar)
+      document.documentElement.classList.toggle('remove-top-bar', !settings.value.useOriginalBilibiliTopBar)
       settings.value.showTopBar = !settings.value.useOriginalBilibiliTopBar
     },
     { immediate: true },

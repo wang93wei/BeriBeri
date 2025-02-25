@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import { onMounted, reactive, ref, watch } from 'vue'
 
 import Empty from '~/components/Empty.vue'
 import Loading from '~/components/Loading.vue'
@@ -25,7 +24,7 @@ const favoriteVideosWrap = ref<HTMLElement>() as Ref<HTMLElement>
 const viewAllUrl = computed((): string => {
   return `//space.bilibili.com/${getUserID()}/favlist?fid=${
     activatedMediaId.value
-  }`
+  }&ftype=create`
 })
 
 const playAllUrl = computed((): string => {

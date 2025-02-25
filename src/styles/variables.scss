@@ -47,13 +47,13 @@
 
   // Use this to imitate the frosted glass edge effect in components with a frosted glass design (except dialogs)
   // 在采用磨砂玻璃设计的组件（对话框除外）中，使用此功能可模仿磨砂玻璃边缘效果
-  --bew-shadow-edge-glow-1: inset 1px 1px 1px -0.5px rgba(255, 255, 255, 0.2),
-    inset -1px -1px 1px -0.5px rgba(255, 255, 255, 0.12), inset 0 0 10px rgba(255, 255, 255, 0.6);
+  --bew-shadow-edge-glow-1: inset 1px 1px 1px -0.5px rgba(255, 255, 255, 0.34),
+    inset -1px -1px 1px -0.5px rgba(255, 255, 255, 0.14), inset 0 0 10px rgba(255, 255, 255, 0.6);
 
   // Use this for dialogs with the frosted glass effect
   // 将其用于具有磨砂玻璃效果的对话框
-  --bew-shadow-edge-glow-2: inset 1px 1px 1px -0.5px rgba(255, 255, 255, 0.2),
-    inset -1px -1px 1px -0.5px rgba(255, 255, 255, 0.12), inset 0 0 14px rgba(255, 255, 255, 0.62);
+  --bew-shadow-edge-glow-2: inset 1px 1px 1px -0.5px rgba(255, 255, 255, 0.34),
+    inset -1px -1px 1px -0.5px rgba(255, 255, 255, 0.14), inset 0 0 14px rgba(255, 255, 255, 0.62);
 
   // #endregion
 
@@ -62,6 +62,9 @@
   // 要为主题或状态颜色添加悬停效果，请使用 `--bew-*-color` 作为基色，并使用 `--bew-*-color-80` 作为悬停状态
 
   --bew-logo-color: var(--bew-theme-color);
+
+  --bew-bili-blue: hsl(195 100% 42%);
+  --bew-bili-pink: hsl(343 94% 72%);
 
   // In light mode use the black; in dark mode use white
   --bew-theme-color-auto: var(--bew-text-1);
@@ -169,7 +172,7 @@
   --bew-content-solid: hsl(0 0% 100%);
   --bew-content-solid-hover: hsl(0 0% 85%);
   --bew-content-alt-solid: hsl(240 31% 95%);
-  --bew-content-alt-solid-hover: hsl(240 31% 85%);
+  --bew-content-alt-solid-hover: hsl(240 31% 80%);
   // #endregion
 
   // `--bew-elevated-*` for popup, dialog and difference layers with difference elevation levels
@@ -189,23 +192,19 @@
 
   // #region Gray semi-transparent colors 灰色半透明色
   // You can used for buttons, input fields and the other components on the top of elements
-  // 可用于按钮、输入框和元素顶部的其他组件
-  --bew-fill-1: rgb(131 131 145 / 13%);
+  --bew-fill-1: rgb(131 131 145 / 15%);
 
   // Used this for hovering color if it within the top layer of elements,
   // not just when hovering over the element itself; otherwise, use `--bew-content-*-hover` or `--bew-elevated--hover`
-  // 如果悬停在元素的顶层，则使用此颜色、
-  // 否则，使用 `--bew-content-*-hover` 或`-bew-elevated--hover`。
-  --bew-fill-2: rgb(131 131 145 / 23%);
+  --bew-fill-2: rgb(131 131 145 / 30%);
 
   // You can used for the disabled state of elements on the top layer
-  // 您可以用它来显示顶层元素的禁用状态
-  --bew-fill-3: rgb(131 131 145 / 33%);
+  --bew-fill-3: rgb(131 131 145 / 45%);
 
-  // 您可以将其用作磨砂玻璃遮罩，如 “稍后观看 ”页面面板和 “收藏 ”页面面板的右侧。
-  --bew-fill-4: rgb(131 131 145 / 63%);
+  // You can use this as the frosted glass mask, such as on the right side of the "Watch Later" page panel and the "Favorites" page panel
+  --bew-fill-4: rgb(131 131 145 / 60%);
 
-  --bew-fill-alt: rgb(255 255 255 / 43%);
+  --bew-fill-alt: rgb(255 255 255 / 45%);
 
   // This color is used in skeleton screens
   // 这种颜色用于镂空屏幕
@@ -242,34 +241,34 @@
   --bew-text-3: hsl(215 19% 82% / 60%);
   --bew-text-4: hsl(215 19% 74% / 40%);
 
-  --bew-bg: hsl(230 12% 6%);
-  --bew-homepage-bg: hsl(230 12% 6%);
-  --bew-homepage-bg-mask: hsl(230 12% 6% / var(--bew-homepage-bg-mask-opacity));
+  --bew-bg: hsl(230 12% 4%);
+  --bew-homepage-bg: hsl(230 12% 4%);
+  --bew-homepage-bg-mask: hsl(230 12% 4% / var(--bew-homepage-bg-mask-opacity));
 
   --bew-content: hsl(230 12% 10% / var(--bew-content-opacity));
-  --bew-content-hover: hsl(230 12% 26% / var(--bew-content-opacity));
+  --bew-content-hover: hsl(230 12% 25% / var(--bew-content-opacity));
   --bew-content-alt: hsl(240 14% 13% / var(--bew-content-opacity));
-  --bew-content-alt-hover: hsl(240 14% 29% / var(--bew-content-opacity));
+  --bew-content-alt-hover: hsl(240 14% 28% / var(--bew-content-opacity));
 
   --bew-content-solid: hsl(230 12% 10%);
-  --bew-content-solid-hover: hsl(230 12% 26%);
+  --bew-content-solid-hover: hsl(230 12% 25%);
   --bew-content-alt-solid: hsl(240 14% 13%);
-  --bew-content-alt-solid-hover: hsl(240 14% 29%);
+  --bew-content-alt-solid-hover: hsl(240 14% 28%);
 
-  --bew-elevated: hsl(230 12% 14% / var(--bew-content-opacity));
+  --bew-elevated: hsl(230 12% 15% / var(--bew-content-opacity));
   --bew-elevated-hover: hsl(230 12% 30% / var(--bew-content-opacity));
   --bew-elevated-alt: var(--bew-elevated);
   --bew-elevated-alt-hover: var(--bew-elevated-hover);
 
-  --bew-elevated-solid: hsl(230 12% 14%);
+  --bew-elevated-solid: hsl(230 12% 15%);
   --bew-elevated-solid-hover: hsl(230 12% 30%);
   --bew-elevated-alt-solid: var(--bew-elevated-solid);
   --bew-elevated-alt-solid-hover: var(--bew-elevated-hover-solid);
 
-  --bew-fill-1: rgb(131 131 145 / 14%);
-  --bew-fill-2: rgb(131 131 145 / 24%);
-  --bew-fill-3: rgb(131 131 145 / 34%);
-  --bew-fill-4: rgb(131 131 145 / 64%);
+  --bew-fill-1: rgb(131 131 145 / 15%);
+  --bew-fill-2: rgb(131 131 145 / 30%);
+  --bew-fill-3: rgb(131 131 145 / 45%);
+  --bew-fill-4: rgb(131 131 145 / 60%);
   --bew-fill-alt: var(--bew-fill-1);
 
   --bew-border-color: rgb(131 131 145 / 26%);
@@ -301,6 +300,13 @@
   --bew-filter-glass-2: blur(20px) saturate(180%);
 }
 
+:host(.disable-shadow),
+:root.disable-shadow {
+  --bew-shadow-1: 0 0 0 transparent;
+  --bew-shadow-2: 0 0 0 transparent;
+  --bew-shadow-3: 0 0 0 transparent;
+  --bew-shadow-4: 0 0 0 transparent;
+}
 :root.bewly-design,
 :root.bewly-design * {
   --brand_pink: var(--bew-theme-color);
@@ -341,10 +347,6 @@
 
 :root.dark.bewly-design,
 :root.dark.bewly-design * {
-  // --brand_pink: var(--bew-theme-color);
-  // --brand_pink_thin: var(--bew-theme-color-20);
-  // --brand_blue: var(--bew-theme-color);
-  // --brand_blue_thin: var(--bew-theme-color-20);
   --stress_red: var(--Re5);
   --stress_red_thin: var(--Re1);
   --success_green: var(--Gr5);
@@ -354,10 +356,19 @@
   --pay_yellow: var(--Ye5);
   --pay_yellow_thin: var(--Ye1);
   --bg1: var(--bew-bg);
-  --bg2: var(--bew-content-alt-solid);
+  --bg2: var(--bew-content-solid);
   --bg3: var(--bew-content-alt-solid);
   --bg1_float: var(--bew-elevated-solid);
   --bg2_float: var(--bew-elevated-solid);
+  // --graph_white: var(--bew-bg);
+  --graph_bg_thin: color-mix(in oklab, var(--bew-content-solid), black 15%);
+  --graph_bg_regular: var(--bew-content-solid);
+  --graph_bg_thick: color-mix(in oklab, var(--bew-content-solid), white 15%);
+  --graph_weak: color-mix(in oklab, var(--bew-content-solid), white 30%);
+  --graph_medium: color-mix(in oklab, var(--bew-content-solid), white 45%);
+  --graph_bold: color-mix(in oklab, var(--bew-content-solid), white 60%);
+  --graph_icon: color-mix(in oklab, var(--bew-content-solid), white 75%);
+  --shadow: var(--Ba0);
   --text_white: var(--Wh0_u);
   --text1: var(--bew-text-1);
   --text2: var(--bew-text-2);
@@ -368,26 +379,6 @@
   --line_light: var(--bew-fill-1);
   --line_regular: var(--bew-fill-2);
   --line_bold: var(--bew-fill-3);
-  --graph_white: var(--bew-content-solid);
-  --graph_bg_bright: color-mix(in oklab, var(--bew-content-solid), #fff 20%);
-  --graph_bg_thin: var(--bew-content-solid);
-  --graph_bg_regular: var(--bew-content-solid);
-  --graph_bg_thick: color-mix(in oklab, var(--bew-content-solid), #fff 20%);
-  --graph_weak: var(--Ga3);
-  --graph_medium: var(--Ga5);
-  --graph_icon: var(--Ga7);
-  --shadow: var(--Ba0);
-
-  // --bpx-primary-color: var(--bew-theme-color);
-  // --bpx-fn-color: var(--bew-theme-color);
-  // --bpx-fn-hover-color: var(--bew-theme-color);
-
-  // --brand_pink_hover: var(--bew-theme-color-80);
-  // --brand_pink_active: var(--bew-theme-color);
-  // --brand_pink_disabled: var(--bew-theme-color-60);
-  // --brand_blue_hover: var(--bew-theme-color-80);
-  // --brand_blue_active: var(--bew-theme-color);
-  // --brand_blue_disabled: var(--bew-theme-color-60);
 
   --graph_bg_thin_rgb: 13, 14, 17;
 
@@ -406,7 +397,7 @@
   --bpx-dmsend-switch-icon: var(--bew-text-2);
   --bpx-dmsend-border: var(--bew-border-color);
   --bpx-dmsend-input-font: var(--bew-text-1);
-  --bg1_rgb: 13, 14, 17;
+  --bg1_rgb: 9, 9, 11;
 
   --Lb0: color-mix(in oklab, var(--bew-theme-color), black 75%);
   --Lb1: color-mix(in oklab, var(--bew-theme-color), black 60%);

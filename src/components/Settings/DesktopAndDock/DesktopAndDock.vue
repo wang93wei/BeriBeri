@@ -69,6 +69,16 @@ const sidebarPositions = computed(() => {
   ]
 })
 
+watch(() => settings.value.halfHideDock, (newValue) => {
+  if (newValue)
+    settings.value.autoHideDock = false
+})
+
+watch(() => settings.value.autoHideDock, (newValue) => {
+  if (newValue)
+    settings.value.halfHideDock = false
+})
+
 function resetDockContent() {
   settings.value.dockItemsConfig = mainStore.dockItems.map((e: DockItem) => {
     return {
@@ -98,11 +108,20 @@ function handleToggleDockItem(dockItem: any) {
       <SettingsItem :title="$t('settings.auto_hide_top_bar')">
         <Radio v-model="settings.autoHideTopBar" />
       </SettingsItem>
+      <SettingsItem :title="$t('settings.show_top_bar_theme_color_gradient')">
+        <Radio v-model="settings.showTopBarThemeColorGradient" />
+      </SettingsItem>
+      <SettingsItem :title="$t('settings.show_bewly_or_bili_top_bar_switcher')">
+        <Radio v-model="settings.showBewlyOrBiliTopBarSwitcher" />
+      </SettingsItem>
       <SettingsItem :title="$t('settings.show_bewly_or_bili_page_switcher')">
         <Radio v-model="settings.showBewlyOrBiliPageSwitcher" />
       </SettingsItem>
       <SettingsItem :title="$t('settings.top_bar_icon_badges')">
         <Select v-model="settings.topBarIconBadges" :options="topBarIconBadgesOptions" w="full" />
+      </SettingsItem>
+      <SettingsItem :title="$t('settings.open_notifications_page_as_drawer')">
+        <Radio v-model="settings.openNotificationsPageAsDrawer" />
       </SettingsItem>
     </SettingsItemGroup>
 
@@ -112,6 +131,9 @@ function handleToggleDockItem(dockItem: any) {
       </SettingsItem>
       <SettingsItem :title="$t('settings.auto_hide_dock')">
         <Radio v-model="settings.autoHideDock" />
+      </SettingsItem>
+      <SettingsItem :title="$t('settings.half_hide_dock')">
+        <Radio v-model="settings.halfHideDock" />
       </SettingsItem>
       <SettingsItem :title="$t('settings.dock_position')" :desc="$t('settings.dock_position_desc')">
         <Select
@@ -178,8 +200,8 @@ function handleToggleDockItem(dockItem: any) {
       <SettingsItem :title="$t('settings.disable_light_dark_mode_switcher')">
         <Radio v-model="settings.disableLightDarkModeSwitcherOnDock" />
       </SettingsItem>
-      <SettingsItem :title="$t('settings.move_back_to_top_and_refresh_to_dock')">
-        <Radio v-model="settings.moveBackToTopOrRefreshButtonToDock" />
+      <SettingsItem :title="$t('settings.back_to_top_and_refresh_buttons_are_separated')">
+        <Radio v-model="settings.backToTopAndRefreshButtonsAreSeparated" />
       </SettingsItem>
     </SettingsItemGroup>
     <SettingsItemGroup :title="$t('settings.group_sidebar')" :desc="$t('settings.group_sidebar_desc')">

@@ -1,6 +1,6 @@
 # BewlyBewly
 
-[English](README.md) | [官话 - 简体中文](README-cmn_CN.md) | 官話 - 正體中文 | [廣東話](README-jyut.md)
+[English](README.md) | [官话 - 简体中文](README-cmn_CN.md) | 官話 - 繁体中文 | [廣東話](README-jyut.md)
 
 <p align="center" style="margin-bottom: 0px !important;">
 <img width="300" alt="BewlyBewly icon" src="https://cdn.jsdelivr.net/gh/BewlyBewly/Imgs/logos/bewlybewly-vtuber-logo.png"><br/>
@@ -17,6 +17,10 @@
 > BewlyBewly 主要著重於頁面調整和改良，而不是完善功能和提升效率。
 >
 > 由於考慮到效率和維護困難度，深色模式只會適應常用的頁面，而較少使用的頁面則不會支護。
+
+> [!CAUTION]
+> [BLBewly](https://apps.apple.com/us/app/blbewly/id6742200021) 是 Safari 上的免費 BewlyBewly 擴充程式。我們感謝 [𝗦𝘁𝗲𝘃𝗲 𝕏](https://x.com/st7evechou) 協助我們免費將應用程式發佈到 Safari。
+> 但是，Safari 版本遇到的問題不在我們的維護範圍內，我們不考慮 Safari 維護。
 
 > [!CAUTION]
 > 如果您正在安裝此擴充功能，您的瀏覽器可能會提示它可以讀取您的瀏覽歷史記錄。
@@ -46,7 +50,7 @@ BewlyBewly 是一個針對 BiliBili 的瀏覽器擴充功能，旨在透過重�
 #### 給 Firefox 使用者的提示
 
 > [!WARNING]
-> 使用 Firefox 瀏覽器時，請記得啟用下圖所示的所有權限，以便正常使用 BewlyBewly
+> 使用 Firefox 瀏覽器時，請記得啓用下圖所示的所有權限，以便正常使用 BewlyBewly
 
 <br/> <img width="655" alt="enable all bewlybewly permissions on firefox" src="https://github.com/hakadao/BewlyBewly/assets/33394391/9566aed8-040a-4435-a2ec-c61117f8e429">
 

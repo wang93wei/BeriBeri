@@ -5,8 +5,11 @@
   // outline-offset: 2px;
 }
 
-.bewly-design.dark * {
-  color-scheme: dark;
+.dark {
+  input,
+  textarea {
+    color-scheme: dark;
+  }
 }
 
 ::-webkit-scrollbar {
@@ -37,19 +40,24 @@ html.bewly-design,
   min-width: unset !important;
   filter: none !important;
   color: var(--bew-text-1);
-  line-height: unset;
   background-image: none;
 }
 
 .dark.bewly-design body,
 html.dark.bewly-design {
-  background-color: var(--bew-bg);
+  background-color: var(--bew-bg) !important;
 }
 
 .bewly-design *::selection,
 .bewly-wrapper *::selection {
   background: color-mix(in oklab, var(--bew-theme-color-60), var(--bew-bg, white) 20%) !important;
   color: revert !important;
+}
+
+.bewly-design {
+  input {
+    background-color: transparent;
+  }
 }
 
 // Adjust broken image icon

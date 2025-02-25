@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useDark } from '~/composables/useDark'
+import { useMainStore } from '~/stores/mainStore'
 import { numFormatter } from '~/utils/dataFormatter'
 import { removeHttpFromUrl } from '~/utils/main'
 
@@ -31,6 +32,11 @@ interface Bangumi {
 }
 
 const { isDark } = useDark()
+const { setActivatedCover } = useMainStore()
+
+function handleMouseEnter(bangumi: Bangumi) {
+  setActivatedCover(`${removeHttpFromUrl(bangumi.cover)}@466w_622h.webp`)
+}
 </script>
 
 <template>
@@ -47,6 +53,7 @@ const { isDark } = useDark()
       content-visibility-auto intrinsic-size-400px
       transition="all ease-in-out 300"
       rounded="$bew-radius" h-fit
+      @mouseenter="handleMouseEnter(bangumi)"
     >
       <!-- Cover -->
       <div
@@ -57,7 +64,7 @@ const { isDark } = useDark()
         <div aspect="12/16" overflow-hidden rounded="$bew-radius">
           <!-- badge -->
           <div
-            v-if="bangumi.badge"
+            v-if="bangumi.badge && bangumi.badge.text"
             :style="{
               backgroundColor: isDark ? bangumi.badge.bgColorDark : bangumi.badge.bgColor,
             }"

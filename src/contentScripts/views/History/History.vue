@@ -6,11 +6,13 @@ import { useBewlyApp } from '~/composables/useAppProvider'
 import type { HistoryResult, List as HistoryItem } from '~/models/history/history'
 import { Business } from '~/models/history/history'
 import type { HistorySearchResult, List as HistorySearchItem } from '~/models/video/historySearch'
+import { useMainStore } from '~/stores/mainStore'
 import api from '~/utils/api'
 import { calcCurrentTime } from '~/utils/dataFormatter'
 import { getCSRF, removeHttpFromUrl } from '~/utils/main'
 
 const { t } = useI18n()
+const { setActivatedCover } = useMainStore()
 
 const isLoading = ref<boolean>()
 const noMoreContent = ref<boolean>(false)
@@ -64,7 +66,7 @@ function getHistoryList() {
           ? historyList[historyList.length - 1].view_at
           : 0,
   })
-    .then((res: HistoryResult) => {
+    .then(async (res: HistoryResult) => {
       if (res.code === 0) {
         if (Array.isArray(res.data.list) && res.data.list.length > 0)
           historyList.push(...res.data.list)
@@ -77,7 +79,7 @@ function getHistoryList() {
 
         noMoreContent.value = false
 
-        if (!haveScrollbar() && !noMoreContent.value) {
+        if (!await haveScrollbar() && !noMoreContent.value) {
           getHistoryList()
         }
       }
@@ -225,6 +227,10 @@ function handleTurnOnWatchHistory() {
 function jumpToLoginPage() {
   location.href = 'https://passport.bilibili.com/login'
 }
+
+function handleMouseEnter(item: HistoryItem) {
+  setActivatedCover(`${getHistoryItemCover(item)}@480w_270h_1c`)
+}
 </script>
 
 <template>
@@ -244,6 +250,7 @@ function jumpToLoginPage() {
           class="group"
           flex
           cursor-pointer
+          @mouseenter="handleMouseEnter(historyItem)"
         >
           <!-- time slot -->
           <div
