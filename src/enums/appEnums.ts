@@ -1,7 +1,7 @@
 export enum LanguageType {
   English = 'en',
-  Mandarin_CN = 'cmn-CN',
-  Mandarin_TW = 'cmn-TW',
+  Mandarin_CN = 'zh-CN',
+  Mandarin_TW = 'zh-TW',
   Cantonese = 'jyut',
 }
 
