@@ -207,7 +207,6 @@ const topBarItemElements: Record<keyof typeof popupVisible, Ref<HTMLElement | un
   more,
 }
 
-const channelsTransformer = setupTopBarItemTransformer('channels')
 const avatarTransformer = setupTopBarItemTransformer('userPanel')
 const notificationsTransformer = setupTopBarItemTransformer('notifications')
 const momentsTransformer = setupTopBarItemTransformer('moments')
@@ -558,9 +557,8 @@ defineExpose({
             <Transition name="slide-in">
               <ChannelsPop
                 v-if="popupVisible.channels"
-                ref="channelsTransformer"
                 class="bew-popover"
-                pos="!left-0"
+                pos="!left-0 !top-50px"
                 transform="!translate-x-0"
               />
             </Transition>
