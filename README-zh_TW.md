@@ -1,4 +1,4 @@
-# BewlyBewly
+# BeriBeri
 
 [English](README-en.md) | [简体中文](README.md) | 繁体中文 | [廣東話](README-jyut.md)
 
@@ -14,7 +14,7 @@
 ## 👋 介紹
 
 > [!IMPORTANT]
-> BewlyBewly 主要著重於頁面調整和改良，而不是完善功能和提升效率。
+> BeriBeri 主要著重於頁面調整和改良，而不是完善功能和提升效率。
 >
 > 由於考慮到效率和維護困難度，深色模式只會適應常用的頁面，而較少使用的頁面則不會支護。
 
