@@ -1,3 +1,3 @@
-<!-- see: https://github.com/BewlyBewly/BewlyBewly/blob/main/docs/CONTRIBUTING.md -->
-<!-- We may not respond to your issue or PR. -->
-<!-- We may close an issue or PR without much feedback. -->
+<!-- 查看: https://github.com/TC999/BeriBeri/blob/main/docs/CONTRIBUTING-cmn_CN.md -->
+<!-- 我们可能不会回复您提交的议题或拉取请求。 -->
+<!-- 我们可能会在没有太多反馈的情况下关闭您提交的议题或拉取请求。 -->
