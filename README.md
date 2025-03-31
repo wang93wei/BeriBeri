@@ -6,7 +6,7 @@
 <img width="300" alt="BewlyBewly icon" src="https://cdn.jsdelivr.net/gh/BewlyBewly/Imgs/logos/bewlybewly-vtuber-logo.png"><br/>
 </p>
 
-<p align="center">只需对您的 BeriBeri 主页进行一些小更改即可。</p>
+<p align="center">只需对您的 BiliBili 主页进行一些小更改即可。</p>
 <p align="center">本项目是基于 BewlyBewly 的二改版。</p>
 
 <!-- ![min1](https://github.com/hakadao/BewlyBewly/assets/33394391/951f9e2a-d0e1-452c-83a9-dc6d85c4d441)
