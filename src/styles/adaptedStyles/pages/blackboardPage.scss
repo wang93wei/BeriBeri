@@ -1,4 +1,7 @@
 .bewly-design.blackboardPage {
+  .international-footer {
+    display: none;
+  }
   // #region 固定修改
   :not(footbar) {
     .active-main .act-list ul li h2 a:hover,
@@ -6,28 +9,51 @@
       color: var(--bew-theme-color);
     }
 
+    .pagelist .flip-left .active,
     .pagelist .flip-left span:hover {
       background: var(--bew-theme-color);
+    }
+
+    .pagelist .flip-left .active,
+    .pagelist .flip-left span:hover,
+    .pagelist .flip-right input:focus {
+      border: 2px solid var(--bew-theme-color);
+    }
+
+    .pagelist .flip-left span,
+    .pagelist .flip-right input {
+      border: 2px solid #83839124;
     }
   }
   // #endregion
   // #region 深色模式
   &.dark {
     .active-main .active-title .b-active-t,
-    .active-main .act-list ul li h2 a {
+    .active-main .act-list ul li h2 a,
+    .pagelist .flip-right input {
       color: var(--bew-text);
     }
 
     .active-main .act-list ul li .event_status,
-    .active-main .act-list ul li .act-info {
+    .active-main .act-list ul li .act-info,
+    .pagelist .flip-left span,
+    .pagelist .flip-left strong {
       color: var(--bew-text-2);
     }
+
+    .active-main .active-title,
+    .active-main .act-list ul li {
+      border-bottom: 2px solid #83839124;
+    }
+
     .active-main .act-list ul li {
       background-color: var(--bew-bg);
     }
 
-    .pagelist .flip-left span {
-      background-color: var(--bew-bg-2);
+    .pagelist .flip-left span,
+    .pagelist .flip-left strong,
+    .pagelist .flip-right input {
+      background-color: var(--bew-content-soild);
     }
   }
   // #endregion
