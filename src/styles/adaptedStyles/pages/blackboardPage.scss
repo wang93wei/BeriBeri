@@ -1,8 +1,34 @@
 .bewly-design.blackboardPage {
   // #region 固定修改
+  :not(footbar) {
+    .active-main .act-list ul li h2 a:hover,
+    .active-main .act-list ul li .event_status .status-ing {
+      color: var(--bew-theme-color);
+    }
+
+    .pagelist .flip-left span:hover {
+      background: var(--bew-theme-color);
+    }
+  }
   // #endregion
   // #region 深色模式
   &.dark {
+    .active-main .active-title .b-active-t,
+    .active-main .act-list ul li h2 a {
+      color: var(--bew-text);
+    }
+
+    .active-main .act-list ul li .event_status,
+    .active-main .act-list ul li .act-info {
+      color: var(--bew-text-2);
+    }
+    .active-main .act-list ul li {
+      background-color: var(--bew-bg);
+    }
+
+    .pagelist .flip-left span {
+      background-color: var(--bew-bg-2);
+    }
   }
   // #endregion
 }
