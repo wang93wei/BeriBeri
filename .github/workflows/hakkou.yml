@@ -32,8 +32,12 @@ jobs:
           run_install: |
             - args: [--frozen-lockfile]
 
-      - name: 引用签名密钥
-        run: echo "${{ secrets.KEY_PEM }}" | tr '\n' '\n' > key.pem
+      - name: 引入签名密钥
+        env:
+          CHROME_PEM: ${{ secrets.CHROME_PEM }}
+        run: |
+          echo "$CHROME_PEM" > ./beriberi.pem
+          chmod 600 ./beriberi.pem
 
       - name: 安装依赖
         run: pnpm install
