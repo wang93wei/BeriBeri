@@ -109,7 +109,7 @@ function handleResetSettings() {
 }
 
 async function checkGitHubRelease() {
-  const apiUrl = `https://api.github.com/repos/BewlyBewly/BewlyBewly/releases/latest`
+  const apiUrl = `https://api.github.com/repos/tc999/BeriBeri/releases/latest`
 
   try {
     const response = await fetch(apiUrl)
@@ -135,10 +135,10 @@ async function checkGitHubRelease() {
     <div max-w-800px mx-auto>
       <div relative w-200px m-auto>
         <img
-          :src="`${browser.runtime.getURL('/assets/bewly-vtuber-style-logo.png')}`" alt="" width="200"
+          :src="`${browser.runtime.getURL('/assets/icon-512.png')}`" alt="" width="200"
         >
         <a
-          v-if=" hasNewVersion" href="https://github.com/TC999/BewlyBewly-Beta/releases"
+          v-if=" hasNewVersion" href="https://github.com/TC999/BeriBeri/releases"
           target="_blank"
           pos="absolute bottom-0 right-0" transform="translate-x-50%" un-text="xs $bew-text-1" p="y-1 x-2" bg="$bew-fill-1"
           rounded-12
@@ -148,7 +148,7 @@ async function checkGitHubRelease() {
       </div>
       <section text-2xl text-center mt-2>
         <p flex="inline gap-2" fw-900>
-          <span>BewlyBewly-Beta</span>
+          <span>BeriBeri</span>
           <span
             v-if="isDev"
             inline-block text="$bew-warning-color"
@@ -158,10 +158,10 @@ async function checkGitHubRelease() {
         </p>
         <p text-center>
           <a
-            href="https://github.com/TC999/BewlyBewly-Beta/releases" target="_blank"
+            href="https://github.com/TC999/BeriBeri/releases" target="_blank"
             un-text="sm color-$bew-text-2 hover:color-$bew-text-3"
           >
-            v{{ version }} - Farewell
+            v{{ version }}
           </a>
         </p>
       </section>
@@ -177,7 +177,7 @@ async function checkGitHubRelease() {
           </h3>
           <div grid="~ xl:cols-6 lg:cols-5 md:cols-4 cols-3 gap-2">
             <a
-              href="https://github.com/TC999/BewlyBewly-Beta" target="_blank"
+              href="https://github.com/TC999/BeriBeri" target="_blank"
               class="link-card"
               bg="black dark:white !opacity-10 !hover:opacity-20"
               un-text="black dark:white"
@@ -185,13 +185,14 @@ async function checkGitHubRelease() {
               <div i-tabler:brand-github /> GitHub
             </a>
             <a
-              href="https://space.bilibili.com/5011356/dynamic" target="_blank"
+              href="https://space.bilibili.com/648765401/dynamic" target="_blank"
               class="link-card"
               bg="#fb7299 dark:#ffa7c0 !opacity-10 !hover:opacity-20"
               un-text="#fb7299 dark:#ffa7c0"
             >
               <div i-tabler:brand-bilibili /> Bilibili
             </a>
+            <!----
             <a
               href="https://discord.gg/TS6vgBmZVp" target="_blank"
               class="link-card"
@@ -208,6 +209,7 @@ async function checkGitHubRelease() {
             >
               <div i-tabler:brand-twitter /> Twitter
             </a>
+            -->
 
             <button
               class="link-card"
@@ -248,6 +250,7 @@ async function checkGitHubRelease() {
                   color="$bew-theme-color"
                 >https://buymeacoffee.com/hakadao</a>
               </p>
+
               <img
                 :src="browser.runtime.getURL('/assets/sponsor/bmc.png')" alt=""
                 max-w-150px w-full
