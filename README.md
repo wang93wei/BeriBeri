@@ -1,4 +1,4 @@
-# BeriBeri
+# BeriBeri(べりべり)
 
 [English](README-en.md) | 简体中文 | [繁体中文](README-zh_TW.md) | [廣東話](README-jyut.md)
 
