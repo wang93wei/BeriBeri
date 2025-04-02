@@ -315,10 +315,10 @@ async function checkGitHubRelease() {
             {{ $t('settings.contributors') }}
           </h3>
           <a
-            href="https://github.com/hakadao/BewlyBewly/graphs/contributors" target="_blank"
+            href="https://github.com/tc999/BeriBeri/graphs/contributors" target="_blank"
           >
             <img
-              src="https://contrib.rocks/image?repo=hakadao/BewlyBewly"
+              src="https://contrib.rocks/image?repo=tc999/BeriBeri"
               w-full
             >
           </a>
