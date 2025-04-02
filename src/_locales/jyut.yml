@@ -60,7 +60,7 @@ settings:
   menu_general: 一般
   menu_desktop_and_dock: 桌面同 Dock
   menu_appearance: 版面
-  menu_bewly_pages: BewlyBewly 頁面
+  menu_bewly_pages: BeriBeri 頁面
   menu_home: 主頁
   menu_search_page: 搵嘢頁
   menu_compatibility: 相容性
@@ -153,8 +153,8 @@ settings:
   use_old_top_bar: 用返舊版頂部欄
   auto_hide_top_bar: 自動收埋頂部欄
   show_top_bar_theme_color_gradient: 喺頂部欄顯示主題色漸變（淨係喺深色模式下有效）
-  show_bewly_or_bili_top_bar_switcher: 顯示 BewlyBewly/Bilibili 頂部欄切換掣
-  show_bewly_or_bili_page_switcher: 顯示 BewlyBewly/Bilibili 頁面切換掣
+  show_bewly_or_bili_top_bar_switcher: 顯示 BeriBeri/Bilibili 頂部欄切換掣
+  show_bewly_or_bili_page_switcher: 顯示 BeriBeri/Bilibili 頁面切換掣
   top_bar_icon_badges: 圖標邊位標記
   top_bar_icon_badges_opt:
     number: 數字
@@ -194,15 +194,15 @@ settings:
   choose_ur_wallpaper: 揀張背景
   image_url: 圖片網址
   image_url_hint: |-
-    網址範例: https://cdn.jsdelivr.net/gh/BewlyBewly/Imgs/wallpapers/rocky-mountain-cloudscape.jpg
-    https://cdn.jsdelivr.net/gh/BewlyBewly/Imgs/wallpapers/green-white-mountains.jpg
+    網址範例: https://cdn.jsdelivr.net/gh/BeriBeri/Imgs/wallpapers/rocky-mountain-cloudscape.jpg
+    https://cdn.jsdelivr.net/gh/BeriBeri/Imgs/wallpapers/green-white-mountains.jpg
   enable_wallpaper_masking: 使用背景遮蔽效果
   wallpaper_mask_opacity: 背景遮蔽透明度調節
   wallpaper_blur_intensity: 背景模糊強度調節
   customize_css: 自訂 CSS
   customize_css_desc: |-
     若然你唔係幾識 CSS，請唔好立亂去改 CSS。唔係嘅話可能會搞到個頁面亂晒。
-    若然你執咗 CSS 之後遇到任何問題，唔該重新單個 BewlyBewly。
+    若然你執咗 CSS 之後遇到任何問題，唔該重新單個 BeriBeri。
 
   # Search page
   logo_color: Logo 顏色
@@ -219,8 +219,8 @@ settings:
   # Home
   recommendation_mode: 推介模式
   recommendation_mode_desc: |
-    若然你想用手機版嘅推介演算法，就要俾 BewlyBewly 批准使用存取 access key。
-  authorize_app: 授權 BewlyBewly 使用 access key
+    若然你想用手機版嘅推介演算法，就要俾 BeriBeri 批准使用存取 access key。
+  authorize_app: 授權 BeriBeri 使用 access key
   authorize_app_desc: >
     授咗權嘅話，你就會收到基於 bilibili 手機版推介演算法所推介嘅內容，兼且授權 key 只有約一個月有效期，到期後記得要重新授權嚟取得存取
     access key。
@@ -267,13 +267,13 @@ settings:
 
   # Compatibility
   # Common
-  topbar_visibility: BewlyBewly 頂部欄可視性
-  topbar_visibility_desc: 若然你係用緊 Bilibili Evolved 嘅頂部欄，你可以喺度閂咗 BewlyBewly 嘅頂部欄去。
+  topbar_visibility: BeriBeri 頂部欄可視性
+  topbar_visibility_desc: 若然你係用緊 Bilibili Evolved 嘅頂部欄，你可以喺度閂咗 BeriBeri 嘅頂部欄去。
   use_original_bilibili_homepage: 用返原本嘅 Bilibili 主頁
   use_original_bilibili_homepage_desc: 改咗之後，如果你喺主頁，個頁面就會自動重新整理！
   use_original_bilibili_topbar: 用返原本嘅 Bilibili 頂部欄
   adapt_to_other_page_styles: 適應其他版面風格
-  adapt_to_other_page_styles_desc: 執執啲常用嘅版面，襯返 BewlyBewly 主題風格。
+  adapt_to_other_page_styles_desc: 執執啲常用嘅版面，襯返 BeriBeri 主題風格。
   # Bilibili Evolved
   follow_bilibili_evolved_color: 跟返 Bilibili Evolved 主題色
   follow_bilibili_evolved_color_desc: 每次換完 Bilibili Evolved 主題色嗰陣，記得揀多一次呢個選項愛嚟更新佈置。
@@ -300,10 +300,10 @@ settings:
   contributors: 貢獻者
 
 auth:
-  auth_access_key_first: 整之前記得先授權 BewlyBewly 去用 access key
+  auth_access_key_first: 整之前記得先授權 BeriBeri 去用 access key
 
 topbar:
-  switch_to_bewly_top_bar: 切換到 BewlyBewly 頂部欄
+  switch_to_bewly_top_bar: 切換到 BeriBeri 頂部欄
   switch_to_bili_top_bar: 切換到 Bilibili/Bilibili-Evolved 頂部欄
 
   sign_in: 登入
