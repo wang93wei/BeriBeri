@@ -3,7 +3,7 @@
 [English](README-en.md) | [简体中文](README.md) | 繁体中文 | [廣東話](README-jyut.md)
 
 <p align="center" style="margin-bottom: 0px !important;">
-<img width="300" alt="BewlyBewly icon" src="https://cdn.jsdelivr.net/gh/BewlyBewly/Imgs/logos/bewlybewly-vtuber-logo.png"><br/>
+<img width="300" alt="BewlyBewly icon" src="./assets/icon-512.png"><br/>
 </p>
 
 <p align="center">只需對您的 Bilibili 主頁進行一些小改動就好。</p>
