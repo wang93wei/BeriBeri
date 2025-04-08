@@ -7,6 +7,7 @@
 </p>
 
 <p align="center">只需對您的 Bilibili 主頁進行一些小改動就好。</p>
+<p align="center">本項目是基於 <a href="https://github.com/BewlyBewly/BewlyBewly">BewlyBewly</a> 的修改版。</p>
 
 <!-- ![min1](https://github.com/hakadao/BewlyBewly/assets/33394391/951f9e2a-d0e1-452c-83a9-dc6d85c4d441)
 ![min2](https://github.com/hakadao/BewlyBewly/assets/33394391/3e75dd20-f60b-4645-b434-23a24c72959c) -->
@@ -56,10 +57,10 @@ BewlyBewly 是一個針對 BiliBili 的瀏覽器擴充功能，旨在透過重�
 
 ### 離線安裝
 
-[CI](https://github.com/TC999/BewlyBewly-Beta/actions)：自動建置最新的程式碼
+[CI](https://github.com/TC999/BeriBeri/actions)：自動建置最新的程式碼
 
-[Releases](https://github.com/TC999/BewlyBewly-Beta/releases)：穩定版本
-
+[發行版](https://github.com/TC999/BeriBeri/releases)：穩定版本
+TC999/BeriBeri
 #### Edge 和 Chrome (推薦)
 
 > 確保您已下載 [extension.zip](https://github.com/TC999/BewlyBewly-Beta/releases)。
@@ -71,7 +72,7 @@ BewlyBewly 是一個針對 BiliBili 的瀏覽器擴充功能，旨在透過重�
 
 #### Edge
 
-> 確保您已下載 [extension.zip](https://github.com/TC999/BewlyBewly-Beta/releases) 並且解壓縮此檔案。
+> 確保您已下載 [extension.zip](https://github.com/TC999/BeriBeri/releases) 並且解壓縮此檔案。
 
 1. 在地址欄中輸入 `edge://extensions/`，然後按下 Enter 鍵
 2. 打開`開發者模式`，然後按下`載入解壓縮` <br/> <img width="655" alt="image" src="https://user-images.githubusercontent.com/33394391/232246901-e3544c16-bde2-480d-b770-ca5242793963.png">
@@ -97,6 +98,7 @@ BewlyBewly 是一個針對 BiliBili 的瀏覽器擴充功能，旨在透過重�
 
 ## ❤️ 鳴謝
 
+- [BewlyBewly](https://github.com/BewlyBewly/BewlyBewly) - 原始專案
 - [vitesse-webext](https://github.com/antfu/vitesse-webext) - 此專案所用的範例
 - [UserScripts/bilibiliHome](https://github.com/indefined/UserScripts/tree/master/bilibiliHome), [bilibili-app-recommend](https://github.com/magicdawn/bilibili-app-recommend) - 參考取得 access key 之方法
 - [Bilibili-Evolved](https://github.com/the1812/Bilibili-Evolved) - 部分功能的實現

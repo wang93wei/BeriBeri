@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">只需对您的 BiliBili 主页进行一些小更改即可。</p>
-<p align="center">本项目是基于 BewlyBewly 的二改版。</p>
+<p align="center">本项目是基于 <a href="https://github.com/BewlyBewly/BewlyBewly">BewlyBewly</a> 的二改版。</p>
 
 <!-- ![min1](https://github.com/hakadao/BewlyBewly/assets/33394391/951f9e2a-d0e1-452c-83a9-dc6d85c4d441)
 ![min2](https://github.com/hakadao/BewlyBewly/assets/33394391/3e75dd20-f60b-4645-b434-23a24c72959c) -->
@@ -70,7 +70,7 @@ BeriBeri 是一个用于 BiliBili 的浏览器扩展，旨在通过重新设计 
 
 [CI](https://github.com/TC999/BeriBeri/actions)：使用最新代码自动构建
 
-[Releases](https://github.com/TC999/BeriBeri/releases)：稳定版
+[发行版](https://github.com/TC999/BeriBeri/releases)：稳定版
 
 <!---
 
@@ -113,6 +113,7 @@ BeriBeri 是一个用于 BiliBili 的浏览器扩展，旨在通过重新设计 
 
 ## ❤️ 鸣谢
 
+- [BewlyBewly](https://github.com/BewlyBewly/BewlyBewly) - 原项目
 - [vitesse-webext](https://github.com/antfu/vitesse-webext) - 该项目使用的模板
 - [UserScripts/bilibiliHome](https://github.com/indefined/UserScripts/tree/master/bilibiliHome),
 [bilibili-app-recommend](https://github.com/magicdawn/bilibili-app-recommend) - 获取访问密钥的参考来源
