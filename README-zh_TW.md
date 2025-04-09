@@ -69,7 +69,7 @@ TC999/BeriBeri
 > 確保您已下載 [extension.zip](https://github.com/TC999/BeriBeri/releases) 並且解壓縮此檔案。
 
 1. 在地址欄中輸入 `edge://extensions/`，然後按下 Enter 鍵
-2. 打開`開發者模式`，然後按下`載入解壓縮` <br/> <img width="655" alt="image" src="./docs/edge.png">
+2. 打開`開發者模式`，然後按下`載入解壓縮` <br/> <img width="655" alt="image" src="./docs/edge.PNG">
 3. 將已解壓縮的擴充功能的資料夾載入到您的瀏覽器
 
 #### Chrome

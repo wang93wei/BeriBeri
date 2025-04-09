@@ -55,7 +55,7 @@ BeriBeri 是一个用于 BiliBili 的浏览器扩展，旨在通过重新设计 
 > 确保您下载了 [extension.zip](https://github.com/TC999/BeriBeri/releases) 并解压缩该文件。
 
 1. 在地址栏输入 `edge://extensions/` 并按回车
-2. 打开 `开发者模式` 并点击 `加载已解压的拓展程序` <br/> <img width="655" alt="image" src="./docs/edge.png">
+2. 打开 `开发者模式` 并点击 `加载已解压的拓展程序` <br/> <img width="655" alt="image" src="./docs/edge.PNG">
 3. 在浏览器中加载解压后的扩展文件夹
 
 #### Chrome

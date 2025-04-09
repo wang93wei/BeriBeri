@@ -78,7 +78,7 @@ BeriBeri 係一個用於 BiliBili 嘅瀏覽器延伸功能，目的係透過重�
 > 確保你單咗 [extension.zip](https://github.com/TC999/BeriBeri/releases) 兼且解壓縮個檔案
 
 1. 在地址欄中輸入 `chrome://extensions/`，然後按下 Enter 鍵
-2. 打開`開發者模式`，撳`載入解壓縮` <br/> <img width="655" alt="Chromium" src="./docs/chromium.PNG">
+2. 打開`開發者模式`，撳`載入解壓縮` <br/> <img width="655" alt="Chromium" src="./docs/chromium.png">
 3. 將解開嘅擴充功能資料夾載入到你嘅瀏覽器度
 
 </details>
