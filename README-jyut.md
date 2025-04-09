@@ -1,6 +1,6 @@
 # # BeriBeri(べりべり)
 
-[English](README-en.md) | [简体中文](README.md) | [繁体中文](README-zh_TW.md) | 廣東話
+ [简体中文](README.md) | [繁体中文](README-zh_TW.md) | 廣東話
 
 <p align="center" style="margin-bottom: 0px !important;">
 <img width="300" alt="BewlyBewly icon" src="./assets/icon-512.png"><br/>
