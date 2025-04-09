@@ -116,8 +116,8 @@ export const originalSettings: Settings = {
   enableGridLayoutSwitcher: true,
   enableHorizontalScrolling: false,
 
-  language: '',
-  customizeFont: 'recommend',
+  language: 'cmn-CN',
+  customizeFont: 'default',
   fontFamily: '',
   overrideDanmakuFont: true,
   removeTheIndentFromChinesePunctuation: false,
