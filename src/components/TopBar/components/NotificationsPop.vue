@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { settings } from '~/logic'
@@ -9,7 +10,9 @@ const emit = defineEmits<{
 }>()
 
 const { t } = useI18n()
-const list = computed((): { name: string, url: string, unreadCount: number, icon: string }[] => [
+
+// 定义响应式的列表数据
+const list = ref([
   {
     name: t('topbar.noti_dropdown.replys'),
     url: 'https://message.bilibili.com/#/reply',
@@ -47,29 +50,45 @@ onMounted(() => {
 })
 
 function getUnreadMessageCount() {
-  api.notification.getUnreadMsg().then((res) => {
-    if (res.code === 0) {
-      const resData = res.data
+  // 获取未读消息数
+  api.notification.getUnreadMsg()
+    .then((res) => {
+      if (res.code === 0 && res.data) {
+        const resData = res.data
+        list.value[0].unreadCount = resData.recv_reply || 0
+        list.value[1].unreadCount = resData.at || 0
+        list.value[2].unreadCount = resData.recv_like || 0
+        list.value[3].unreadCount = resData.sys_msg || 0
+      }
+      else {
+        // 错误处理，确保数据安全
+        resetUnreadCounts([0, 1, 2, 3])
+      }
+    })
+    .catch(() => {
+      resetUnreadCounts([0, 1, 2, 3])
+    })
 
-      list.value[0].unreadCount = resData.recv_reply
-      list.value[1].unreadCount = resData.at
-      list.value[2].unreadCount = resData.recv_like
-      list.value[3].unreadCount = resData.sys_msg
-    }
-  }).catch(() => {
-    list.value[0].unreadCount = 0
-    list.value[1].unreadCount = 0
-    list.value[2].unreadCount = 0
-    list.value[3].unreadCount = 0
-  })
+  // 获取未读私信数
+  api.notification.getUnreadDm()
+    .then((res) => {
+      if (res.code === 0 && res.data) {
+        const resData = res.data
+        list.value[4].unreadCount = resData.follow_unread || 0
+      }
+      else {
+        resetUnreadCounts([4])
+      }
+    })
+    .catch(() => {
+      resetUnreadCounts([4])
+    })
+}
 
-  api.notification.getUnreadDm().then((res) => {
-    if (res.code === 0) {
-      const resData = res.data
-      list.value[4].unreadCount = resData.follow_unread
-    }
-  }).catch(() => {
-    list.value[4].unreadCount = 0
+// 重置未读计数
+function resetUnreadCounts(indices: number[]) {
+  indices.forEach((index) => {
+    list.value[index].unreadCount = 0
   })
 }
 
@@ -109,9 +128,9 @@ function handleClick(event: MouseEvent, item: { name: string, url: string, unrea
         <i :class="item.icon" text="$bew-text-2" />
         <span flex="1 shrink-0" text-nowrap>{{ item.name }}</span>
       </div>
-      <!-- Use visibility to control the number of notifications to prevent width changes as soon as there is a number -->
+      <!-- 使用 v-if 控制 DOM 渲染，确保响应式更新 -->
       <div
-        :style="{ visibility: item.unreadCount > 0 ? 'visible' : 'hidden' }"
+        v-if="item.unreadCount > 0"
         bg="$bew-theme-color"
         rounded="$bew-radius"
         text="white xs leading-none center"
