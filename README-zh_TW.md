@@ -20,18 +20,14 @@
 > 由於考慮到效率和維護困難度，深色模式只會適應常用的頁面，而較少使用的頁面則不會支護。
 
 > [!CAUTION]
-> [BLBewly](https://apps.apple.com/us/app/blbewly/id6742200021) 是 Safari 上的免費 BewlyBewly 擴充程式。我們感謝 [𝗦𝘁𝗲𝘃𝗲 𝕏](https://x.com/st7evechou) 協助我們免費將應用程式發佈到 Safari。
-> 但是，Safari 版本遇到的問題不在我們的維護範圍內，我們不考慮 Safari 維護。
-
-> [!CAUTION]
 > 如果您正在安裝此擴充功能，您的瀏覽器可能會提示它可以讀取您的瀏覽歷史記錄。
 >
-> 這是因爲 BewlyBewly 使用了["tabs" 權限](https://developer.chrome.com/docs/extensions/reference/api/tabs)，該權限也可用於讀取每個分頁，從而瞭解瀏覽歷史，但在這裏並未使用。
+> 這是因爲 BeriBeri 使用了["tabs" 權限](https://developer.chrome.com/docs/extensions/reference/api/tabs)，該權限也可用於讀取每個分頁，從而瞭解瀏覽歷史，但在這裏並未使用。
 >
 > **一些瀏覽器會提到最壞的情況和最高的風險，以確保您在安裝後的安全。**
 > 此外，這個專案是開源的，所以您可以看到它究竟做了什麼。
 
-BewlyBewly 是一個針對 BiliBili 的瀏覽器擴充功能，旨在透過重新設計 BiliBili 的介面來提升用戶體驗。設計靈感來自於 YouTube、Vision OS 和 iOS，使介面更具視覺吸引力和用戶友好性。
+BeriBeri 是一個針對 BiliBili 的瀏覽器擴充功能，旨在透過重新設計 BiliBili 的介面來提升用戶體驗。設計靈感來自於 YouTube、Vision OS 和 iOS，使介面更具視覺吸引力和用戶友好性。
 
 該專案使用 [vitesse-webext](https://github.com/antfu/vitesse-webext) 範例進行開發。如果沒有此範例，可能無法開發出此專案。
 
@@ -80,7 +76,7 @@ TC999/BeriBeri
 
 #### Chrome
 >
-> 確保您已下載 [extension.zip](https://github.com/TC999/BewlyBewly-Beta/releases) 並且解壓縮此檔案。
+> 確保您已下載 [extension.zip](https://github.com/TC999/BeriBeri/releases) 並且解壓縮此檔案。
 
 1. 在地址欄中輸入 `chrome://extensions/`，然後按下 Enter 鍵
 2. 打開`開發者模式`，然後按下`載入解壓縮` <br/> <img width="655" alt="Snipaste_2022-03-27_18-17-04" src="https://user-images.githubusercontent.com/33394391/160276882-13da0484-92c1-47dd-add8-7655c5c2bf1c.png">
@@ -94,7 +90,7 @@ TC999/BeriBeri
 
 ### 貢獻者
 
-[![Contributors](https://contrib.rocks/image?repo=TC999/BewlyBewly-Beta)](https://github.com/TC999/BewlyBewly-Beta/graphs/contributors)
+[![Contributors](https://contrib.rocks/image?repo=TC999/BeriBeri)](https://github.com/TC999/BeriBeri/graphs/contributors)
 
 ## ❤️ 鳴謝
 
