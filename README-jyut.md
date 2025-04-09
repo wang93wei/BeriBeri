@@ -7,6 +7,7 @@
 </p>
 
 <p align="center">係咁以執吓你嘅 Bilibili 主頁。</p>
+<p align="center">呢個 GitHub 倉庫係唯一發佈渠道。</p>
 <p align="center">本項目係基於 <a href="https://github.com/BewlyBewly/BewlyBewly">BewlyBewly</a> 嘅修改版。</p>
 
 <!-- ![min1](https://github.com/hakadao/BewlyBewly/assets/33394391/951f9e2a-d0e1-452c-83a9-dc6d85c4d441)
