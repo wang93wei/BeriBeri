@@ -30,7 +30,7 @@
 
 BeriBeri 係一個用於 BiliBili 嘅瀏覽器延伸功能，目的係透過重新設計 BiliBili 嘅 UI 令到用戶體驗提升。設計靈感源於 YouTube、Vision OS 同 iOS，從而實現更具視覺吸引力同用戶友好嘅介面。
 
-呢個專案係用咗 [vitesse-webext](https://github.com/antfu/vitesse-webext) 範例進行開發。若果冇咗呢個範例，BewlyBewly 得個吉。
+呢個專案係用咗 [vitesse-webext](https://github.com/antfu/vitesse-webext) 範例進行開發。若果冇咗呢個範例，BeriBeri 得個吉。
 
 ## ⬇️ 單撈
 
@@ -43,15 +43,12 @@ BeriBeri 係一個用於 BiliBili 嘅瀏覽器延伸功能，目的係透過重�
 > 仲有，BewlyBewly 喺 Chrome 線上應用程式商店嘅版本執啲嚴重性嘅 bug 速度係會快趣過 Edge 附加元件好多嘅 ~~Edge Add-ons 你幾時死~~
 -->
 
-- Chrome，Edge 或其他基於 Chromuim 嘅瀏覽器: <https://chromewebstore.google.com/detail/bewlybewly/bbbiejemhfihiooipfcjmjmbfdmobobp>
-- Firefox 或其他基於 Gecko 嘅瀏覽器: <https://addons.mozilla.org/zh-TW/firefox/addon/bewlybewly/>
-
 #### Firefox 用家留意吓
 
 > [!WARNING]
 > 用 Firefox 瀏覽器嗰陣，爲咗你正常使用 BeriBeri，記得開晒下邊圖片展示嘅權限
 
-<br/> <img width="655" alt="enable all bewlybewly permissions on firefox" src="https://github.com/hakadao/BewlyBewly/assets/33394391/9566aed8-040a-4435-a2ec-c61117f8e429">
+<br/> <img width="655" alt="firefox" src="./docs/firefox.png">
 
 ### 離線單嘢
 
@@ -73,7 +70,7 @@ BeriBeri 係一個用於 BiliBili 嘅瀏覽器延伸功能，目的係透過重�
 > 確保你單咗 [extension.zip](https://github.com/TC999/BeriBeri/releases) 兼且解壓縮個檔案
 
 1. 喺地址欄入邊輸入 `edge://extensions/`，然之後撳 Enter
-2. 打開`開發者模式`，撳`載入解壓縮` <br/> <img width="655" alt="image" src="https://user-images.githubusercontent.com/33394391/232246901-e3544c16-bde2-480d-b770-ca5242793963.png">
+2. 打開`開發者模式`，撳`載入解壓縮` <br/> <img width="655" alt="image" src="./docs/edge.PNG">
 3. 將解開嘅擴充功能資料夾載入到你嘅瀏覽器度
 
 #### Chrome
@@ -81,7 +78,7 @@ BeriBeri 係一個用於 BiliBili 嘅瀏覽器延伸功能，目的係透過重�
 > 確保你單咗 [extension.zip](https://github.com/TC999/BeriBeri/releases) 兼且解壓縮個檔案
 
 1. 在地址欄中輸入 `chrome://extensions/`，然後按下 Enter 鍵
-2. 打開`開發者模式`，撳`載入解壓縮` <br/> <img width="655" alt="Snipaste_2022-03-27_18-17-04" src="https://user-images.githubusercontent.com/33394391/160276882-13da0484-92c1-47dd-add8-7655c5c2bf1c.png">
+2. 打開`開發者模式`，撳`載入解壓縮` <br/> <img width="655" alt="Chromium" src="./docs/chromium.PNG">
 3. 將解開嘅擴充功能資料夾載入到你嘅瀏覽器度
 
 </details>

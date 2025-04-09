@@ -42,15 +42,12 @@ BeriBeri 是一個針對 BiliBili 的瀏覽器擴充功能，旨在透過重新�
 >
 > 此外，BewlyBewly 的 Chrome Web Store 版本將更快地解決和修復關鍵性的錯誤。-->
 
-- Chrome 或其他基於 Chromium 的瀏覽器: <https://chromewebstore.google.com/detail/bewlybewly/bbbiejemhfihiooipfcjmjmbfdmobobp>
-- Firefox 或其他基於 Gecko 的瀏覽器: <https://addons.mozilla.org/zh-TW/firefox/addon/bewlybewly/>
-
 #### 給 Firefox 使用者的提示
 
 > [!WARNING]
 > 使用 Firefox 瀏覽器時，請記得啓用下圖所示的所有權限，以便正常使用 BewlyBewly
 
-<br/> <img width="655" alt="enable all bewlybewly permissions on firefox" src="https://github.com/hakadao/BewlyBewly/assets/33394391/9566aed8-040a-4435-a2ec-c61117f8e429">
+<br/> <img width="655" alt="firefox" src="./docs/firefox.png">
 
 ### 離線安裝
 
@@ -72,7 +69,7 @@ TC999/BeriBeri
 > 確保您已下載 [extension.zip](https://github.com/TC999/BeriBeri/releases) 並且解壓縮此檔案。
 
 1. 在地址欄中輸入 `edge://extensions/`，然後按下 Enter 鍵
-2. 打開`開發者模式`，然後按下`載入解壓縮` <br/> <img width="655" alt="image" src="https://user-images.githubusercontent.com/33394391/232246901-e3544c16-bde2-480d-b770-ca5242793963.png">
+2. 打開`開發者模式`，然後按下`載入解壓縮` <br/> <img width="655" alt="image" src="./docs/edge.png">
 3. 將已解壓縮的擴充功能的資料夾載入到您的瀏覽器
 
 #### Chrome
@@ -80,7 +77,7 @@ TC999/BeriBeri
 > 確保您已下載 [extension.zip](https://github.com/TC999/BeriBeri/releases) 並且解壓縮此檔案。
 
 1. 在地址欄中輸入 `chrome://extensions/`，然後按下 Enter 鍵
-2. 打開`開發者模式`，然後按下`載入解壓縮` <br/> <img width="655" alt="Snipaste_2022-03-27_18-17-04" src="https://user-images.githubusercontent.com/33394391/160276882-13da0484-92c1-47dd-add8-7655c5c2bf1c.png">
+2. 打開`開發者模式`，然後按下`載入解壓縮` <br/> <img width="655" alt="Chromium" src="./docs/chromium.png">
 3. 將已解壓縮的擴充功能的資料夾載入到您的瀏覽器
 
 </details>

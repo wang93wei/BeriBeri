@@ -32,6 +32,13 @@ BeriBeri 是一个用于 BiliBili 的浏览器扩展，旨在通过重新设计 
 
 该项目使用 [vitesse-webext](https://github.com/antfu/vitesse-webext) 模板进行开发。如果没有这个模板，可能无法开发出这个项目。
 
+#### 给 Firefox 使用者的提示
+
+> [!WARNING]
+> 使用 Firefox 浏览器时，请记得启用下图所示的所有权限，以便正常使用 BeriBeri
+
+<br/> <img width="655" alt="firefox" src="./docs/firefox.png">
+
 ## ⬇️ 安装
 
 ### 本地安装
@@ -48,7 +55,7 @@ BeriBeri 是一个用于 BiliBili 的浏览器扩展，旨在通过重新设计 
 > 确保您下载了 [extension.zip](https://github.com/TC999/BeriBeri/releases) 并解压缩该文件。
 
 1. 在地址栏输入 `edge://extensions/` 并按回车
-2. 打开 `开发者模式` 并点击 `加载已解压的拓展程序` <br/> <img width="655" alt="image" src="https://user-images.githubusercontent.com/33394391/232246901-e3544c16-bde2-480d-b770-ca5242793963.png">
+2. 打开 `开发者模式` 并点击 `加载已解压的拓展程序` <br/> <img width="655" alt="image" src="./docs/edge.png">
 3. 在浏览器中加载解压后的扩展文件夹
 
 #### Chrome
@@ -56,7 +63,7 @@ BeriBeri 是一个用于 BiliBili 的浏览器扩展，旨在通过重新设计 
 > 确保您下载了 [extension.zip](https://github.com/TC999/BeriBeri/releases) 并解压缩该文件。
 
 1. 在地址栏输入 `chrome://extensions/` 并按回车
-2. 打开 `开发者模式` 并点击 `加载已解压的拓展程序` <br/> <img width="655" alt="Snipaste_2022-03-27_18-17-04" src="https://user-images.githubusercontent.com/33394391/160276882-13da0484-92c1-47dd-add8-7655c5c2bf1c.png">
+2. 打开 `开发者模式` 并点击 `加载已解压的拓展程序` <br/> <img width="655" alt="Chromium" src="./docs/chromium.png">
 3. 在浏览器中加载解压后的扩展文件夹
 
 </details>
