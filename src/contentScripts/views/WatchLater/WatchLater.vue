@@ -72,7 +72,7 @@ async function getAllWatchLaterList() {
   }
 }
 
-async function getCurrentWatchLaterList() {
+function getCurrentWatchLaterList() {
   const allWatchLaterListCopy = JSON.parse(JSON.stringify(allWatchLaterList.value))
   const currentList = allWatchLaterListCopy.slice((pageNum.value - 1) * 10, pageNum.value * 10)
 
@@ -83,7 +83,7 @@ async function getCurrentWatchLaterList() {
   pageNum.value++
   currentWatchLaterList.value.push(...currentList)
 
-  if (!await haveScrollbar() && !noMoreContent.value) {
+  if (!haveScrollbar() && !noMoreContent.value) {
     getCurrentWatchLaterList()
   }
 }
