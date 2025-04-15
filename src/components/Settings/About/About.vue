@@ -120,10 +120,13 @@ async function checkGitHubRelease() {
     const latestVersion = data.tag_name
 
     // Here you can compare `latestVersion` with your current version
-    const currentVersion = `v${version}` // Replace with your actual current version
+    const currentVersion = `${version}` // Replace with your actual current
+    // console.log('当前版本:', currentVersion)
+    // console.log('获取到的最新版本:', latestVersion)
 
-    if (latestVersion !== currentVersion)
+    if (latestVersion !== currentVersion) {
       hasNewVersion.value = true
+    }
   }
   catch {
   }
@@ -138,7 +141,7 @@ async function checkGitHubRelease() {
           :src="`${browser.runtime.getURL('/assets/icon-512.png')}`" alt="" width="200"
         >
         <a
-          v-if=" hasNewVersion" href="https://github.com/TC999/BeriBeri/releases"
+          v-if="hasNewVersion" href="https://github.com/TC999/BeriBeri/releases"
           target="_blank"
           pos="absolute bottom-0 right-0" transform="translate-x-50%" un-text="xs $bew-text-1" p="y-1 x-2" bg="$bew-fill-1"
           rounded-12
