@@ -285,6 +285,7 @@ settings:
   follow_bilibili_evolved_color_desc: After changing the theme color in Bilibili Evolved, you will need to re-select this option in order to update the theme color.
 
   # About
+  new: NEW
   links: Links
   sponsor: Sponsor
   sponsor_desc: If you like this project and would like to see it glow, please consider sponsoring it. Your support is the driving force behind the project's development.
