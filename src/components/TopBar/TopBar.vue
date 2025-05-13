@@ -9,7 +9,7 @@ import { OVERLAY_SCROLL_BAR_SCROLL, TOP_BAR_VISIBILITY_CHANGE } from '~/constant
 import { AppPage } from '~/enums/appEnums'
 import { settings } from '~/logic'
 import api from '~/utils/api'
-import { getUserID, isHomePage, isInIframe } from '~/utils/main'
+import { getUserID, isHomePage, isInIframe, removeHttpFromUrl } from '~/utils/main'
 import emitter from '~/utils/mitt'
 import { createTransformer } from '~/utils/transformer'
 
@@ -874,10 +874,7 @@ defineExpose({
                 class="avatar-img"
                 :class="{ hover: popupVisible.userPanel }"
                 :style="{
-                  backgroundImage: `url(${`${userInfo.face}`.replace(
-                    'http:',
-                    '',
-                  )})`,
+                  backgroundImage: `url(${userInfo.face ? removeHttpFromUrl(userInfo.face) : ''})`,
                 }"
               />
               <div
@@ -885,10 +882,7 @@ defineExpose({
                 class="avatar-shadow"
                 :class="{ hover: popupVisible.userPanel }"
                 :style="{
-                  backgroundImage: `url(${`${userInfo.face}`.replace(
-                    'http:',
-                    '',
-                  )})`,
+                  backgroundImage: `url(${userInfo.face ? removeHttpFromUrl(userInfo.face) : ''})`,
                 }"
               />
               <svg
