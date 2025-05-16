@@ -33,7 +33,7 @@ function injectFunction(
   }
 }
 
-// 扩展监听的方法，增加 replaceState
+// 注入 history.pushState 调用以触发自定义的 pushstate 事件，用于监控 iframe drawer 路由变化
 injectFunction(
   window.history,
   ['pushState'],
