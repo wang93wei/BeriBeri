@@ -33,11 +33,12 @@ function injectFunction(
   }
 }
 
+// 扩展监听的方法，增加 replaceState
 injectFunction(
   window.history,
-  ['pushState', 'forward', 'replaceState'],
+  ['pushState'],
   (...args) => {
-    window.dispatchEvent(new CustomEvent('historyChange', { detail: args }))
+    window.dispatchEvent(new CustomEvent('pushstate', { detail: args }))
   },
 )
 

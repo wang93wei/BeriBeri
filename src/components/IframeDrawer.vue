@@ -25,28 +25,38 @@ const delayCloseTimer = ref<NodeJS.Timeout | null>(null)
 const removeTopBarClassInjected = ref<boolean>(false)
 
 useEventListener(window, 'popstate', updateIframeUrl)
-nextTick(() => {
-  useEventListener(iframeRef.value?.contentWindow, 'historyChange', updateCurrentUrl)
-  useEventListener(iframeRef.value?.contentWindow, 'popstate', updateCurrentUrl)
 
-  useEventListener(iframeRef.value?.contentWindow, 'DOMContentLoaded', () => {
-    if (headerShow.value) {
-      iframeRef.value?.contentWindow?.document.documentElement.classList.add('remove-top-bar-without-placeholder')
-      removeTopBarClassInjected.value = true
-    }
-    else {
-      iframeRef.value?.contentWindow?.document.documentElement.classList.remove('remove-top-bar-without-placeholder')
-      removeTopBarClassInjected.value = false
-    }
+function setupIframeListeners() {
+  if (!(iframeRef.value && iframeRef.value.contentWindow)) {
+    console.error('Iframe or contentWindow is not available')
+    return
+  }
+  useEventListener(iframeRef.value, 'load', () => {
+    useEventListener(iframeRef.value?.contentWindow, 'pushstate', updateCurrentUrl)
+    useEventListener(iframeRef.value?.contentWindow, 'popstate', updateCurrentUrl)
+
+    useEventListener(iframeRef.value?.contentWindow, 'DOMContentLoaded', () => {
+      if (headerShow.value) {
+        iframeRef.value?.contentWindow?.document.documentElement.classList.add('remove-top-bar-without-placeholder')
+        removeTopBarClassInjected.value = true
+      }
+      else {
+        iframeRef.value?.contentWindow?.document.documentElement.classList.remove('remove-top-bar-without-placeholder')
+        removeTopBarClassInjected.value = false
+      }
+    })
   })
-})
+}
 
 onMounted(() => {
   history.pushState(null, '', props.url)
   show.value = true
   headerShow.value = true
   nextTick(() => {
-    iframeRef.value?.focus()
+    if (iframeRef.value) {
+      setupIframeListeners()
+      iframeRef.value?.focus()
+    }
   })
 })
 
@@ -58,15 +68,19 @@ onUnmounted(() => {
   history.replaceState(null, '', 'https://www.bilibili.com')
 })
 
-function updateCurrentUrl() {
-  if (iframeRef.value?.contentWindow) {
-    try {
-      currentUrl.value = iframeRef.value.contentWindow.location.href.replace(/\/$/, '')
-      history.pushState(null, '', currentUrl.value.replace(/\/$/, ''))
-    }
-    catch (error) {
-      console.error('Unable to access iframe URL:', error)
-    }
+function updateCurrentUrl(e: any) {
+  if (!iframeRef.value?.contentWindow) {
+    console.error('iframe contentWindow not available')
+    return
+  }
+  let newUrl = iframeRef.value.contentWindow.location.href
+  if (e.type === 'pushstate' && Array.isArray(e.detail) && e.detail.length === 3 && e.detail[2]) {
+    // pushstate event, detail[2] is the new URL
+    newUrl = String(e.detail[2])
+  }
+  newUrl = newUrl.replace(/\/$/, '')
+  if (newUrl && newUrl !== 'about:blank') {
+    history.replaceState(null, '', newUrl)
   }
 }
 
