@@ -279,6 +279,7 @@ watchEffect(() => {
             frameborder="0"
             pointer-events-auto
             pos="relative left-0"
+            allow="fullscreen"
             w-full
             h-full @load="showIframe = true"
           />
