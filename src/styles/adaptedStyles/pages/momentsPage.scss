@@ -379,6 +379,24 @@
       border-color: var(--bew-border-color);
       color: var(--bew-text-1);
     }
+
+    :not(pre) > code[class*="language-"],
+    pre[class*="language-"] {
+      background: var(--bew-elevated-solid);
+    }
+
+    code[class*="language-"] {
+      color: var(--bew-text-1);
+      text-shadow: none;
+    }
+
+    .language-css .token.string,
+    .style .token.string,
+    .token.entity,
+    .token.operator,
+    .token.url {
+      background: none;
+    }
   }
 
   // #endregion
