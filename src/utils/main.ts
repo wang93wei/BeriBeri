@@ -292,22 +292,49 @@ export function compareVersions(version1: string, version2: string): number {
   return 0 // Versions are equal
 }
 
-export function queryDomUntilFound(selector: string, timeout = 500, abort?: AbortController): Promise<HTMLElement | null> {
+export function queryDomUntilFound(selector: string, interval = 500, abort?: AbortController): Promise<HTMLElement | null> {
   return new Promise((resolve) => {
-    const interval = setInterval(() => {
-      const element = document.querySelector(selector)
-      if (element) {
-        clearInterval(interval)
-        resolve(element as HTMLElement)
-      }
-    }, timeout)
+    const check = () => document.querySelector(selector) as HTMLElement | null
 
-    if (abort) {
-      abort.signal.addEventListener('abort', () => {
-        clearInterval(interval)
-        resolve(null)
-      })
+    const found = check()
+    if (found) {
+      resolve(found)
+      return
     }
+
+    let timer: ReturnType<typeof setInterval>
+    let observer: MutationObserver
+    const onAbort = () => {
+      clearInterval(timer)
+      observer.disconnect()
+      abort?.signal.removeEventListener('abort', onAbort)
+      resolve(null)
+    }
+
+    observer = new MutationObserver(() => {
+      const el = check()
+      if (el) {
+        clearInterval(timer)
+        observer.disconnect()
+        abort?.signal.removeEventListener('abort', onAbort)
+        resolve(el)
+      }
+    })
+
+    timer = setInterval(() => {
+      const el = check()
+      if (el) {
+        clearInterval(timer)
+        observer.disconnect()
+        abort?.signal.removeEventListener('abort', onAbort)
+        resolve(el)
+      }
+    }, interval)
+
+    if (abort)
+      abort.signal.addEventListener('abort', onAbort)
+
+    observer.observe(document.documentElement, { childList: true, subtree: true })
   })
 }
 
