@@ -79,6 +79,8 @@ async function setupStyles() {
     || /https?:\/\/(?:www\.)?bilibili\.com\/list\/ml.*/.test(currentUrl)
     // 视频合集
     || /https?:\/\/(?:www\.)?bilibili\.com\/list\/.*/.test(currentUrl)
+    // 节日活动页面
+    || /https?:\/\/(?:www\.)?bilibili\.com\/festival\/.*/.test(currentUrl)
   ) {
     await import('./pages/videoPage.scss')
     document.documentElement.classList.add('videoPage')
