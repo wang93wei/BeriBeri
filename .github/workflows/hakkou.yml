@@ -29,10 +29,8 @@ jobs:
             - args: [--frozen-lockfile]
 
       - name: 引入签名密钥 & 编译
-        env:
-          CHROME_PEM: ${{ secrets.CHROME_PEM }}
         run: |
-          echo "$CHROME_PEM" > ./beriberi.pem
+          echo "${{ secrets.CHROME_PEM }}" > ./beriberi.pem
           chmod 600 ./beriberi.pem
           pnpm install
           pnpm build
@@ -40,30 +38,6 @@ jobs:
           pnpm pack:crx
           pnpm pack:zip
           pnpm pack:xpi
-
-      # - name: 安装依赖
-      #   run: pnpm install
-
-      # - name: Chrome 插件编译
-      #   run: pnpm build
-
-      # - name: Chrome 打包
-      #   run: pnpm pack:crx && pnpm pack:zip
-
-      # - name: Firefox 插件编译
-      #   run: pnpm build-firefox
-
-      # - name: Firefox 打包
-      #   run: pnpm pack:xpi
-
-      # - name: 上传
-      #   uses: actions/upload-artifact@v4.3.1
-      #   with:
-      #     name: extension
-      #     path: |
-      #       extension.crx
-      #       extension.zip
-      #       extension.xpi
 
       - name: 创建发行版
         uses: softprops/action-gh-release@v2
