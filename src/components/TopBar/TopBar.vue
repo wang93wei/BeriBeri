@@ -876,23 +876,23 @@ defineExpose({
                 :style="{
                   backgroundImage: `url(${userInfo.face ? removeHttpFromUrl(userInfo.face) : ''})`,
                 }"
-              />
+              >
+                <template #default>
+                  <svg
+                    v-if="userInfo.vip?.status === 1"
+                    :class="{ hover: popupVisible.userPanel }"
+                    :style="{ opacity: popupVisible.userPanel ? 1 : 0 }"
+                    bg="[url(https://i0.hdslb.com/bfs/seed/jinkela/short/user-avatar/big-vip.svg)] contain no-repeat"
+                    w="28%" h="28%" z-1
+                    pos="absolute bottom-none right-none" duration-300
+                  />
+                </template>
+              </ALink>
               <div
                 ref="avatarShadow"
                 class="avatar-shadow"
                 :class="{ hover: popupVisible.userPanel }"
-                :style="{
-                  backgroundImage: `url(${userInfo.face ? removeHttpFromUrl(userInfo.face) : ''})`,
-                }"
-              />
-              <svg
-                v-if="userInfo.vip?.status === 1"
-                class="vip-img"
-                :class="{ hover: popupVisible.userPanel }"
-                :style="{ opacity: popupVisible.userPanel ? 1 : 0 }"
-                bg="[url(https://i0.hdslb.com/bfs/seed/jinkela/short/user-avatar/big-vip.svg)] contain no-repeat"
-                w="28%" h="28%" z-1
-                pos="absolute bottom--20px right-28px" duration-300
+                :style="{ backgroundImage: `url(${userInfo.face ? removeHttpFromUrl(userInfo.face) : ''})` }"
               />
 
               <Transition name="slide-in">
@@ -1026,12 +1026,6 @@ defineExpose({
 
       &.hover {
         --uno: "opacity-60";
-      }
-    }
-
-    .vip-img {
-      &.hover {
-        --uno: "transform scale-180 translate-y-55px translate-15px";
       }
     }
   }
