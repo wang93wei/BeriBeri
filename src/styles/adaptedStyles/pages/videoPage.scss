@@ -20,6 +20,38 @@
     --app_graph_bg: var(--bew-fill-1);
   }
 
+  // 合集滚动条
+  .video-pod__body {
+    // 设置最大高度以限制容器高度，超过则显示滚动条
+    max-height: 70vh; /* 可根据需要调整高度 */
+    overflow-y: auto; /* 垂直方向溢出时显示滚动条 */
+    padding-right: 8px; /* 预留滚动条空间，避免内容被遮挡 */
+  }
+
+  // 优化滚动条样式（可选）
+  .video-pod__body::-webkit-scrollbar {
+    width: 6px; /* 滚动条宽度 */
+  }
+
+  .video-pod__body::-webkit-scrollbar-track {
+    background: var(--bew-fill-1); /* 滚动条轨道颜色 */
+    border-radius: 3px;
+  }
+
+  .video-pod__body::-webkit-scrollbar-thumb {
+    background: var(--bew-border-color); /* 滚动条滑块颜色 */
+    border-radius: 3px;
+  }
+
+  .video-pod__body::-webkit-scrollbar-thumb:hover {
+    background: var(--bew-text-3); /* 滚动条滑块 hover 颜色 */
+  }
+
+  // 暗黑模式适配
+  &.dark .video-pod__body::-webkit-scrollbar-track {
+    background: var(--bew-fill-2);
+  }
+
   // #region theme color adaption part
   // Increase the priority of the style inside by writing a non-existent selector in `:not()`
   :not(foobar) {
